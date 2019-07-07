@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="Miracle" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>一个小型微信自动回复机器人 | 一条普朗克长度的鱼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+<meta name="keywords" content="自动处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个小型微信自动回复机器人">
+<meta property="og:url" content="/2017/10/16/一个小型微信自动回复机器人/index.html">
+<meta property="og:site_name" content="一条普朗克长度的鱼">
+<meta property="og:description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-19T01:56:16.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个小型微信自动回复机器人">
+<meta name="twitter:description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+</head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="一条普朗克长度的鱼" rel="home">一条普朗克长度的鱼</a>
+      </h1>
+      
+        <h2 class="site-description">
+          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+        </h2>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-一个小型微信自动回复机器人" class="post-一个小型微信自动回复机器人 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      一个小型微信自动回复机器人
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2017/10/16/一个小型微信自动回复机器人/" data-id="cjxscrvpm00051ovfmpmvzyg7" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档<a href="http://itchat.readthedocs.io/zh/latest/api/" target="_blank" rel="noopener">ITchat</a>。<br><a id="more"></a><br>图灵机器人是一个基于自然语言处理、知识库和云计算等技术提供的一系列智能语义处理能力的服务平台，官网传送门<a href="http://www.tuling123.com/" target="_blank" rel="noopener">戳这里</a>。你可以再官网定制你的机器人属性。</p>
+<p>该程序在接受到微信消息后，将该消息发送给图灵机器人的服务器取得响应，再将响应内容中的”Text”标签提取出来，通过itchat.msg_register方法自动将内容回复给发送者。</p>
+<p>在程序运行时，会先弹出一个QRuuid，通过微信扫码后便可登陆。将itchat.autologin方法中hotreload的参数设置为true时，会生成一个itchat.pkl的十六进制文件，记录账号的登陆状态。</p>
+<h1 id="以下是程序源码"><a href="#以下是程序源码" class="headerlink" title="以下是程序源码"></a>以下是程序源码</h1><pre><code>import requests
+import itchat
+def Turing_response(msg):
+    apiUrl=&quot;http://www.tuling123.com/openapi/api&quot;
+    data = {
+        &apos;key&apos;    : &apos;7f5b71d6ecc548fc861ce5de63df85eb&apos;, # 我申请的图灵key
+        &apos;info&apos;   : msg, # 这是我们发出去的消息
+        &apos;userid&apos; : &apos;APlanckFish&apos;, # 我的名字
+    }
+    try:
+        r=requests.post(apiUrl,data=data).json()
+        return r.get(&apos;text&apos;)
+    except:
+        return None
+# 这是与图灵服务器交互的程序
+
+@itchat.msg_register(itchat.content.TEXT)
+def turing_reply(msg):
+    defaultReply=&quot;我收到了:&quot;+msg[&apos;Text&apos;]
+    #设置默认回复，防止服务器无响应
+    reply=Turing_response(msg[&apos;Text&apos;])
+    #调用图灵服务器回复
+    return reply or defaultReply
+    #a or b 意思是如果a不为None，则返回a，否则返回b
+itchat.auto_login(hotReload=True)
+itchat.run()
+</code></pre><p>也可以浏览我的github仓库。亲测该聊天机器人可以查询天气、快递单号以及其他信息，<strong>不能识别图片表情包。</strong> 如果需大量调用可购买图灵机器人的商用api。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2017/10/16/一个小型微信自动回复机器人/">
+    <time datetime="2017-10-16T08:37:24.000Z" class="entry-date">
+        2017-10-16
+    </time>
+</a>
+    
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
+  </div>
+
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动处理/">自动处理</a></li></ul>
+
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2017/11/14/与雪球网交互抓取股票数据/" rel="prev"><span class="meta-nav">←</span> 与雪球网交互抓取股票数据</a></span>
+    
+    
+        <span class="nav-next"><a href="/2016/11/23/天淨沙·一/" rel="next">天淨沙·一 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-content">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">3</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/採桑子·一/">採桑子·一</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/蝶戀花·一/">蝶戀花·一</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/天净沙/" style="font-size: 10px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 20px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2019 陈攀博
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>
