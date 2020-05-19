@@ -1,69 +1,95 @@
-
 <!DOCTYPE html>
-<html lang="zh-CN" class="loading">
+<html>
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>一个小型微信自动回复机器人 - 一条普朗克长度的鱼</title>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="google" content="notranslate" />
-    <meta name="keywords" content="Fechin,"> 
-    <meta name="description" content="Miracle,事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。图灵机器人是一个,"> 
-    <meta name="author" content="陈攀博"> 
-    <link rel="alternative" href="atom.xml" title="一条普朗克长度的鱼" type="application/atom+xml"> 
-    <link rel="icon" href="/img/favicon.png"> 
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-    <link rel="stylesheet" href="/css/diaspora.css">
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-         (adsbygoogle = window.adsbygoogle || []).push({
-              google_ad_client: "ca-pub-8691406134231910",
-              enable_page_level_ads: true
-         });
-    </script>
-    <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-    </script>
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="Miracle" />
+  
+
+  
+  
+  
+  
+  
+  
+  <title>一个小型微信自动回复机器人 | 一条普朗克长度的鱼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+<meta name="keywords" content="自动处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一个小型微信自动回复机器人">
+<meta property="og:url" content="/2017/10/16/一个小型微信自动回复机器人/index.html">
+<meta property="og:site_name" content="一条普朗克长度的鱼">
+<meta property="og:description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-05-19T01:56:16.689Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一个小型微信自动回复机器人">
+<meta name="twitter:description" content="事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档ITchat。">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
 </head>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="一条普朗克长度的鱼" rel="home">一条普朗克长度的鱼</a>
+      </h1>
+      
+        <h2 class="site-description">
+          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+        </h2>
+      
+    </hgroup>
 
-<body class="loading">
-    <span id="config-title" style="display:none">一条普朗克长度的鱼</span>
-    <div id="loader"></div>
-    <div id="single">
-    <div id="top" style="display: block;">
-    <div class="bar" style="width: 0;"></div>
-    <a class="icon-home image-icon" href="javascript:;" data-url=""></a>
-    <div title="播放/暂停" class="icon-play"></div>
-    <h3 class="subtitle">一个小型微信自动回复机器人</h3>
-    <div class="social">
-        <!--<div class="like-icon">-->
-            <!--<a href="javascript:;" class="likeThis active"><span class="icon-like"></span><span class="count">76</span></a>-->
-        <!--</div>-->
-        <div>
-            <div class="share">
-                <a title="获取二维码" class="icon-scan" href="javascript:;"></a>
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                </ul>
             </div>
-            <div id="qr"></div>
-        </div>
-    </div>
-    <div class="scrollbar"></div>
-</div>
+    </nav>
+</header>
 
-    <div class="section">
-        <div class="article">
-    <div class='main'>
-        <h1 class="title">一个小型微信自动回复机器人</h1>
-        <div class="stuff">
-            <span>十月 16, 2017</span>
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-一个小型微信自动回复机器人" class="post-一个小型微信自动回复机器人 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      一个小型微信自动回复机器人
+    </h1>
+  
+
+        
+        <div class="comments-link">
             
-  <ul class="post-tags-list"><li class="post-tags-list-item"><a class="post-tags-list-link" href="/tags/自动处理/">自动处理</a></li></ul>
+            <a href="javascript:void(0);" data-url="/2017/10/16/一个小型微信自动回复机器人/" data-id="ckadjz6ye0005y0vf8vqb9xpu" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
 
-
-        </div>
-        <div class="content markdown">
-            <p>事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档<a href="http://itchat.readthedocs.io/zh/latest/api/" target="_blank" rel="noopener">ITchat</a>。<br><a id="more"></a><br>图灵机器人是一个基于自然语言处理、知识库和云计算等技术提供的一系列智能语义处理能力的服务平台，官网传送门<a href="http://www.tuling123.com/" target="_blank" rel="noopener">戳这里</a>。你可以再官网定制你的机器人属性。</p>
+    <div class="entry-content">
+      
+        <p>事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档<a href="http://itchat.readthedocs.io/zh/latest/api/" target="_blank" rel="noopener">ITchat</a>。<br><a id="more"></a><br>图灵机器人是一个基于自然语言处理、知识库和云计算等技术提供的一系列智能语义处理能力的服务平台，官网传送门<a href="http://www.tuling123.com/" target="_blank" rel="noopener">戳这里</a>。你可以再官网定制你的机器人属性。</p>
 <p>该程序在接受到微信消息后，将该消息发送给图灵机器人的服务器取得响应，再将响应内容中的”Text”标签提取出来，通过itchat.msg_register方法自动将内容回复给发送者。</p>
 <p>在程序运行时，会先弹出一个QRuuid，通过微信扫码后便可登陆。将itchat.autologin方法中hotreload的参数设置为true时，会生成一个itchat.pkl的十六进制文件，记录账号的登陆状态。</p>
 <h1 id="以下是程序源码"><a href="#以下是程序源码" class="headerlink" title="以下是程序源码"></a>以下是程序源码</h1><pre><code>import requests
@@ -94,98 +120,161 @@ itchat.auto_login(hotReload=True)
 itchat.run()
 </code></pre><p>也可以浏览我的github仓库。亲测该聊天机器人可以查询天气、快递单号以及其他信息，<strong>不能识别图片表情包。</strong> 如果需大量调用可购买图灵机器人的商用api。</p>
 
-            <!--[if lt IE 9]><script>document.createElement('audio');</script><![endif]-->
-            <audio id="audio" loop="1" preload="auto" controls="controls" data-autoplay="false">
-                <source type="audio/mpeg" src="">
-            </audio>
-            
-                <ul id="audio-list" style="display:none">
-                    
-                        <li title='0' data-url='http://link.hhtjim.com/163/5146554.mp3'></li>
-                    
-                        <li title='1' data-url='http://link.hhtjim.com/qq/001faIUs4M2zna.mp3'></li>
-                    
-                </ul>
-            
-        </div>
-        
-    <div id='gitalk-container' class="comment link"
-        data-ae='false'
-        data-ci=''
-        data-cs=''
-        data-r=''
-        data-o=''
-        data-a=''
-        data-d='false'
-    >查看评论</div>
+      
+    </div><!-- .entry-content -->
 
-
-    </div>
+    <footer class="entry-meta">
+    <a href="/2017/10/16/一个小型微信自动回复机器人/">
+    <time datetime="2017-10-16T08:37:24.000Z" class="entry-date">
+        2017-10-16
+    </time>
+</a>
     
-</div>
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
+  </div>
+
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动处理/">自动处理</a></li></ul>
+
+    </footer>
+</article>
 
 
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2017/11/14/与雪球网交互抓取股票数据/" rel="prev"><span class="meta-nav">←</span> 与雪球网交互抓取股票数据</a></span>
+    
+    
+        <span class="nav-next"><a href="/2016/11/23/天淨沙·一/" rel="next">天淨沙·一 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+  <section id="comments">
+    <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+    <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+    <script type="text/javascript">
+      const gitment = new Gitment({
+        id: document.location.href, // optional
+        owner: 'APlanckFish',
+        repo: 'gitment-comments',
+        oauth: {
+          client_id: 'db2f5fcf70a7ab0a2b34',
+          client_secret: '486eff9025dbc4d4aa01f02c8c15b32a266d76c2',
+        }
+      })
+
+      gitment.render('comments')
+    </script>
+  </section>
+  
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
     </div>
+</form></aside>
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-content">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2019/07/07/test/">test_post</a>
+          </li>
+        
+          <li>
+            <a href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+          </li>
+        
+          <li>
+            <a href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+          </li>
+        
+          <li>
+            <a href="/2016/11/23/採桑子·一/">採桑子·一</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/天净沙/" style="font-size: 15px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 20px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </aside>
+
+  
 </div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2020 陈攀博
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
 </body>
-<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-<script src="//lib.baomitu.com/jquery/1.8.3/jquery.min.js"></script>
-<script src="/js/plugin.js"></script>
-<script src="/js/diaspora.js"></script>
-<link rel="stylesheet" href="/photoswipe/photoswipe.css">
-<link rel="stylesheet" href="/photoswipe/default-skin/default-skin.css">
-<script src="/photoswipe/photoswipe.min.js"></script>
-<script src="/photoswipe/photoswipe-ui-default.min.js"></script>
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
-            <div class="pswp__top-bar">
-                <!--  Controls are self-explanatory. Order can be changed. -->
-                <div class="pswp__counter"></div>
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-                <button class="pswp__button pswp__button--share" title="Share"></button>
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
 </html>
