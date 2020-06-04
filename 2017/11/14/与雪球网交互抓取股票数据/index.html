@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta name="generator" content="Hexo 3.9.0">
   <meta charset="utf-8">
   
   
-  <meta name="description" content="Miracle" />
+  <meta name="description" content="Miracle">
   
 
   
@@ -24,7 +24,7 @@
 <meta property="og:description" content="这些天写了一个简单的与雪球网交互的小程序，功能是运行后可以获取实时的股票价格，还有股票的历史价格，并将历史价格绘制成走势图。python在爬虫方面有urllib、requests、BeautifulSoup4等工具库。urllib可用于抓取静态页面的html文本，requests可用于向网页发送请求(get/post)并获取返回的响应，BeautifulSoup库可用于对html页面的解析。 12">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="/images/Figure_1.jpg">
-<meta property="og:updated_time" content="2019-07-07T08:36:25.701Z">
+<meta property="og:updated_time" content="2019-07-07T08:36:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="与雪球网交互抓取股票数据">
 <meta name="twitter:description" content="这些天写了一个简单的与雪球网交互的小程序，功能是运行后可以获取实时的股票价格，还有股票的历史价格，并将历史价格绘制成走势图。python在爬虫方面有urllib、requests、BeautifulSoup4等工具库。urllib可用于抓取静态页面的html文本，requests可用于向网页发送请求(get/post)并获取返回的响应，BeautifulSoup库可用于对html页面的解析。 12">
@@ -38,8 +38,8 @@
 
   
   <!-- baidu webmaster push -->
-  <script src='//push.zhanzhang.baidu.com/push.js'></script>
-</head>
+  <script src="//push.zhanzhang.baidu.com/push.js"></script>
+</head></html>
 <body class="home blog custom-background custom-font-enabled single-author">
   <div id="page" class="hfeed site">
       <header id="masthead" class="site-header" role="banner">
@@ -64,6 +64,8 @@
                 
                     <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
                 
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+                
                 </ul>
             </div>
     </nav>
@@ -85,7 +87,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2017/11/14/与雪球网交互抓取股票数据/" data-id="ckadjz6yg0006y0vfrh1dnwxa" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2017/11/14/与雪球网交互抓取股票数据/" data-id="ckb0jwxw30006xr9kwp5tlz5c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -101,7 +103,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#将Date转化为matplotlib可识别的格式</span></span><br><span class="line">Date.reverse()</span><br><span class="line">Date_new=[]</span><br><span class="line"><span class="keyword">for</span> d <span class="keyword">in</span> Date:</span><br><span class="line">	d=d.replace(<span class="string">"Dec "</span>,<span class="string">"12/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Nov "</span>,<span class="string">"11/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Oct "</span>,<span class="string">"10/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Sep "</span>,<span class="string">"09/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Aug "</span>,<span class="string">"08/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Jul "</span>,<span class="string">"07/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Jun "</span>,<span class="string">"06/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"May "</span>,<span class="string">"05/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Apr "</span>,<span class="string">"04/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Mar "</span>,<span class="string">"03/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Feb "</span>,<span class="string">"02/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">"Jan "</span>,<span class="string">"01/"</span>)</span><br><span class="line">	d=d.replace(<span class="string">", "</span>,<span class="string">"/"</span>)</span><br><span class="line">	Date_new.append(d)</span><br><span class="line">Date_new=[datetime.strptime(d, <span class="string">'%m/%d/%Y'</span>).date() <span class="keyword">for</span> d <span class="keyword">in</span> Date_new]</span><br><span class="line">Date=Date_new</span><br><span class="line">Open.reverse()</span><br><span class="line">Close.reverse()</span><br></pre></td></tr></table></figure>
 <p>通过进行字符串的拼接，”Jun 30, 2017”就变成了6/30/2017这种格式。由于爬取的日期(以及其他数据)的时间线是往前的，因此使用了reverse将该列表进行倒序。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_mat</span><span class="params">()</span>:</span></span><br><span class="line">	fig1=plt.figure()</span><br><span class="line">	ax1=fig1.add_subplot(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>)</span><br><span class="line">	ax1.xaxis.set_major_formatter(DateFormatter(<span class="string">'%m-%d'</span>))<span class="comment">#设置时间标签显示格式</span></span><br><span class="line">	ax1.xaxis.set_major_locator(AutoDateLocator())<span class="comment">#设置x轴自动时间刻度</span></span><br><span class="line">	ax1.yaxis.set_major_locator(AutoLocator())<span class="comment">#设置y轴自动刻度</span></span><br><span class="line">	plt.plot(Date,Open,label=<span class="string">"Open"</span>,color=<span class="string">"red"</span>)</span><br><span class="line">	plt.plot(Date,Close,label=<span class="string">"Close"</span>,color=<span class="string">"blue"</span>)</span><br><span class="line">	plt.title(<span class="string">u"抓取特斯拉股票历史开盘、收盘价格"</span>,fontproperties=font)</span><br><span class="line">	plt.xlabel(<span class="string">"时间"</span>,fontproperties=font)</span><br><span class="line">	plt.legend()</span><br><span class="line">	plt.show()</span><br><span class="line">print_mat()</span><br></pre></td></tr></table></figure>
-<p>在程序开始我指定了字体，否则matplotlib无法正确识别中文。plot是绘制折线图的方法，我使用AutoLocator和AutoDateLocator分别设置了y轴与x轴的刻度，如果忽略此步数据量过大将无法正确显示刻度。<br>最后的成果如下：<br><img src="/images/Figure_1.jpg" alt=""><br>以上。<br>该程序其实还有很多改进空间。<br>1.可以编写URL管理器来进行管理。调用get_price()方法或者get_history_price()方法均需输入网址，但是用户需要提前去找的话就不需要该程序了。因此可以编辑一个字典将网址存储起来，例如用户只需要输入”特斯拉”便可以自动输入”<a href="https://xueqiu.com/S/AAPL&quot;。" target="_blank" rel="noopener">https://xueqiu.com/S/AAPL&quot;。</a><br>2.编写一个的可视化界面。<br>3.当抓取数据量庞大时，可以考虑接入数据库。<br>4.可与itchat联动，每天早上微信自动推送关注股票的信息。<br>5.可手动指定刻度，提高图片精度<br>6.想到再加。。。<br>具体全部代码可移步我的github@APlanckFish。</p>
+<p>在程序开始我指定了字体，否则matplotlib无法正确识别中文。plot是绘制折线图的方法，我使用AutoLocator和AutoDateLocator分别设置了y轴与x轴的刻度，如果忽略此步数据量过大将无法正确显示刻度。<br>最后的成果如下：<br><img src="/images/Figure_1.jpg" alt><br>以上。<br>该程序其实还有很多改进空间。<br>1.可以编写URL管理器来进行管理。调用get_price()方法或者get_history_price()方法均需输入网址，但是用户需要提前去找的话就不需要该程序了。因此可以编辑一个字典将网址存储起来，例如用户只需要输入”特斯拉”便可以自动输入”<a href="https://xueqiu.com/S/AAPL&quot;。" target="_blank" rel="noopener">https://xueqiu.com/S/AAPL&quot;。</a><br>2.编写一个的可视化界面。<br>3.当抓取数据量庞大时，可以考虑接入数据库。<br>4.可与itchat联动，每天早上微信自动推送关注股票的信息。<br>5.可手动指定刻度，提高图片精度<br>6.想到再加。。。<br>具体全部代码可移步我的github@APlanckFish。</p>
 
       
     </div><!-- .entry-content -->
@@ -210,7 +212,7 @@
           </li>
         
           <li>
-            <a href="/2016/11/23/採桑子·一/">採桑子·一</a>
+            <a href="/2016/11/23/采桑子/">採桑子·一</a>
           </li>
         
       </ul>
