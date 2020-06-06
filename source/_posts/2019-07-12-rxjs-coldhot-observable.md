@@ -20,7 +20,7 @@ Cold observables start running upon subscription, i.e., the observable sequence 
 
 ## Cold Observables
 
-```javascript
+```ts
 let obs$ = from([1, 2, 3, 4, 5]);
 
 obs$.subscribe(data => { console.log("1st subscriber:" + data) });
@@ -52,7 +52,7 @@ setTimeout(() => {
 ```
 结果还是跟上面一样，没有任何区别。这个是Cold Observables，两个订阅分别有两个订阅实例，是单播的，在没有开始订阅之前，obs$是不发送值，一旦开始订阅，不管是从什么时候开始，obs$都是从第一个值开始发送值，所以两个订阅接收到值没有区别。
 
-
+<!-- more --> 
 ## Hot Observables
 
 我先把前面Cold Observables改成Hot Observables，代码如下，先忽略publish，ConnectableObservable，connect，稍后再详细解释。
