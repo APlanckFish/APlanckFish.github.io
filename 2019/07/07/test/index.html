@@ -15,18 +15,18 @@
   
   <title>test_post | 一条普朗克长度的鱼</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="123let a = val =&amp;gt;&amp;#123;    console.log(val)&amp;#125;">
+  <meta name="description" content="let a = val =&amp;gt;{     console.log(val) }">
 <meta name="keywords" content="格律词,天净沙">
 <meta property="og:type" content="article">
 <meta property="og:title" content="test_post">
 <meta property="og:url" content="/2019/07/07/test/index.html">
 <meta property="og:site_name" content="一条普朗克长度的鱼">
-<meta property="og:description" content="123let a = val =&amp;gt;&amp;#123;    console.log(val)&amp;#125;">
+<meta property="og:description" content="let a = val =&amp;gt;{     console.log(val) }">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-07-07T08:57:44.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="test_post">
-<meta name="twitter:description" content="123let a = val =&amp;gt;&amp;#123;    console.log(val)&amp;#125;">
+<meta name="twitter:description" content="let a = val =&amp;gt;{     console.log(val) }">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -34,9 +34,27 @@
   <link rel="stylesheet" href="/css/style.css">
   
 
-  
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
   <!-- baidu webmaster push -->
   <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
 </head></html>
 <body class="home blog custom-background custom-font-enabled single-author">
   <div id="page" class="hfeed site">
@@ -85,13 +103,16 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="ckb0jwxvy0002xr9kqu9k8t69" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="ckb3lzhpa000eho9kxuj2lwhj" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="function"><span class="params">val</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <pre><code class="javascript">let a = val =&gt;{
+    console.log(val)
+}
+</code></pre>
 
       
     </div><!-- .entry-content -->
@@ -119,6 +140,8 @@
     
 <nav class="nav-single">
     <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2020/06/04/2019-07-05-rxjs-introduce/" rel="prev"><span class="meta-nav">←</span> RxJS入门和概览</a></span>
     
     
         <span class="nav-next"><a href="/2017/11/14/与雪球网交互抓取股票数据/" rel="next">与雪球网交互抓取股票数据 <span class="meta-nav">→</span></a></span>
@@ -182,23 +205,23 @@
       <ul>
         
           <li>
-            <a href="/2019/07/07/test/">test_post</a>
+            <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
           </li>
         
           <li>
-            <a href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+            <a href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
           </li>
         
           <li>
-            <a href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+            <a href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+            <a href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/采桑子/">採桑子·一</a>
+            <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
           </li>
         
       </ul>
@@ -210,7 +233,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tags</h3>
     <div class="widget-content">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </aside>
 
@@ -219,7 +242,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-content tagcloud">
-      <a href="/tags/天净沙/" style="font-size: 15px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 20px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </aside>
 

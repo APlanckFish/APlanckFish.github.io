@@ -32,9 +32,27 @@
   <link rel="stylesheet" href="/css/style.css">
   
 
-  
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
   <!-- baidu webmaster push -->
   <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
 </head></html>
 <body class="home blog custom-background custom-font-enabled single-author">
   <div id="page" class="hfeed site">
@@ -70,7 +88,7 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
-    <article id="post-test" class="post-test post type-post status-publish format-standard hentry">
+    <article id="post-2019-07-12-rxjs-coldhot-observable" class="post-2019-07-12-rxjs-coldhot-observable post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -78,39 +96,212 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2019/07/07/test/">test_post</a>
+      <a class="article-title" href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="ckb0jwxvy0002xr9kqu9k8t69" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-07-12-rxjs-coldhot-observable/" data-id="ckb3lzhp00002ho9km9i2x2pv" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a = <span class="function"><span class="params">val</span> =&gt;</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(val)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <p>RxJS中Observables分为两种：Cold Observables和Hot Observables，这两个到底有什么区别呢？我们先来看下<a href="https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md#cold-vs-hot-observables" target="_blank" rel="noopener">RxJS官方</a>给出的解释：</p>
+<blockquote><br><p><br>Cold observables start running upon subscription, i.e., the observable sequence only starts pushing values to the observers when Subscribe is called. (…) This is different from hot observables such as mouse move events or stock tickers which are already producing values even before a subscription is active.<br></p><br></blockquote>
+
+<p>翻译过来就是：</p>
+<ul>
+<li><p>Cold Observables只有被observers订阅的时候，才会开始产生值。是单播的，有多少个订阅就会生成多少个订阅实例，每个订阅都是从第一个产生的值开始接收值，所以每个订阅接收到的值都是一样的。</p>
+</li>
+<li><p>Hot Observables不管有没有被订阅都会产生值。是多播的，多个订阅共享同一个实例，是从订阅开始接受到值，每个订阅接收到的值是不同的，取决于它们是从什么时候开始订阅。</p>
+</li>
+</ul>
+<p>单看文字解释，还是不太能理解，那自己先动手写几个Observables看看。具体代码在这里：<a href="https://github.com/LiMeii/angular-rxjs/tree/master/src/app/modules/rxjs-cold-hot" target="_blank" rel="noopener">angular-rxjs</a></p>
+<h2 id="Cold-Observables"><a href="#Cold-Observables" class="headerlink" title="Cold Observables"></a>Cold Observables</h2><pre><code class="javascript">let obs$ = from([1, 2, 3, 4, 5]);
+
+obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+obs$.subscribe(data =&gt; { console.log(&quot;2nd subscriber:&quot; + data) });
+</code></pre>
+<p>把一个数组转换成observables，然后分别用不同的Subscription订阅它，在console里结果如下：</p>
+<pre><code>1st subscriber:1
+1st subscriber:2
+1st subscriber:3
+1st subscriber:4
+1st subscriber:5
+2nd subscriber:1
+2nd subscriber:2
+2nd subscriber:3
+2nd subscriber:4
+2nd subscriber:5
+</code></pre><p>我们把代码改一下，让第二个Subscription延迟1秒订阅：</p>
+<pre><code class="ts">let obs$ = from([1, 2, 3, 4, 5]);
+
+obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;2nd subscriber:&quot; + data) });
+}, 1100);
+</code></pre>
+<p>结果还是跟上面一样，没有任何区别。这个是Cold Observables，两个订阅分别有两个订阅实例，是单播的，在没有开始订阅之前，obs$是不发送值，一旦开始订阅，不管是从什么时候开始，obs$都是从第一个值开始发送值，所以两个订阅接收到值没有区别。</p>
+<h2 id="Hot-Observables"><a href="#Hot-Observables" class="headerlink" title="Hot Observables"></a>Hot Observables</h2><p>我先把前面Cold Observables改成Hot Observables，代码如下，先忽略publish，ConnectableObservable，connect，稍后再详细解释。</p>
+<pre><code>let obs$ = from([1, 2, 3, 4, 5]).pipe(
+    publish()
+) as ConnectableObservable&lt;any&gt;;
+obs$.connect();
+
+obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;2st subscriber:&quot; + data) });
+}, 2100);
+</code></pre><p>根据Hot Observables的定义，期待的效果是第一个订阅接收到1，2，3，4，5；第二个订阅接收到3，4，5。实际上两个订阅都没有接收任何值！仔细想想其实也是正常的，因为Hot Observables是不管有没有被订阅，都会发送值，我们数组里有五个值，等到开始订阅的时候，这五个值都已经发送完了，所以在订阅里接收不到任何值了。</p>
+<p>为了看到效果，我们把数组替换成interval，每隔一秒就发送一个值，第一个订阅是等了一秒开始接受值，第二个订阅是等了两秒开始接受值，代码如下：</p>
+<pre><code>let obs$ = interval(1000).pipe(
+    publish()
+) as ConnectableObservable&lt;any&gt;;
+obs$.connect();
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+    setTimeout(() =&gt; {
+        obs$.subscribe(data =&gt; { console.log(&quot;2st subscriber:&quot; + data) });
+    }, 1100);
+}, 2100);
+</code></pre><p>效果是，第一个订阅从2开始接受值，第二个订阅从3开始接受值：</p>
+<pre><code>1st subscriber:2
+1st subscriber:3
+2st subscriber:3
+1st subscriber:4
+2st subscriber:4
+1st subscriber:5
+2st subscriber:5
+1st subscriber:6
+2st subscriber:6
+
+......
+</code></pre><h3 id="Cold-Observables-vs-Hot-Observables"><a href="#Cold-Observables-vs-Hot-Observables" class="headerlink" title="Cold Observables　vs　Hot Observables"></a>Cold Observables　vs　Hot Observables</h3><ul>
+<li><p>我们可以把Cold Observables理解为在手机网易云音乐APP上听歌：APP里的歌曲资源是Cold Observables，听歌的人是observers。如果没有人打开APP去播放这首歌，这首歌不会自己播放。每个人从自己APP打开播放这首歌的时候，先把歌曲从网上下载到本地，每份都是单独的歌曲实例，都是从头开始听，互相不会影响。</p>
+</li>
+<li><p>而Hot Observables可以理解为演唱会：比如我们去看一场演唱会，没有迟到的小伙伴（A）可以从第一首歌开始听，迟到的小伙伴就（B）只能从第二首或者更晚的歌开始听；演唱会就是Hot Observables，小伙伴A和B就是observers。小伙伴A和B共享同一个演唱会实例，是从订阅开始接受到值，每个订阅接收到的值是不同的，取决于它们是从什么时候开始订阅。</p>
+</li>
+</ul>
+<h3 id="那怎么创建Hot-Observables呢？"><a href="#那怎么创建Hot-Observables呢？" class="headerlink" title="那怎么创建Hot Observables呢？"></a>那怎么创建Hot Observables呢？</h3><p>在上面的Hot Observables代码里，用到了publish操作符，ConnectableObservable，以及connect()方法创建Hot Observables；我们来看下它们到底是什么意思。</p>
+<blockquote><br><p><br><strong>publish：</strong>这个操作符把正常的Observable（Cold Observables ）转换成ConnectableObservable。<br></p><br><br><p><br><strong>ConnectableObservable：</strong>ConnectableObservable是多播的共享Observable，可以同时被多个observers共享订阅，它是Hot Observables。ConnectableObservable是订阅者和真正的源头Observables（上面例子中的interval，每隔一秒发送一个值，就是源头Observables）的中间人，ConnectableObservable从源头Observables接收到值然后再把值转发给订阅者。<br></p><br><br><p><br><strong>connect()：</strong>ConnectableObservable并不会主动发送值，它有个connect方法，通过调用connect方法，可以启动共享ConnectableObservable发送值。当我们调用ConnectableObservable.prototype.connect方法，不管有没有被订阅，都会发送值。订阅者共享同一个实例，订阅者接收到的值取决于它们何时开始订阅。在我们的例子中，第一个订阅等了一秒从2开始接受值，第二个订阅等了两秒从3开始接受值。<br></p><br></blockquote>
+
+
+<h2 id="connect-vs-refCount"><a href="#connect-vs-refCount" class="headerlink" title="connect vs refCount"></a>connect vs refCount</h2><p>除了connect，还有一个refCount方法，在比较这两个区别之前，我们先来看下refCount的用法和效果：</p>
+<pre><code class="ts">let obs$ = interval(1000).pipe(
+    publish(),
+    refCount()
+)
+
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+    setTimeout(() =&gt; {
+        obs$.subscribe(data =&gt; { console.log(&quot;2st subscriber:&quot; + data) });
+
+    }, 1100);
+
+}, 2000);
+</code></pre>
+<p>按之间对publish会生成一个ConnectableObservable，它是一个Hot Observables，那么预期结果是：第一个订阅者是从2开始接收值，第二个订阅者是从3开始接受值？</p>
+<p>我们来看下实际效果：</p>
+<pre><code>1st subscriber:0
+1st subscriber:1
+2st subscriber:1
+1st subscriber:2
+2st subscriber:2
+1st subscriber:3
+2st subscriber:3
+1st subscriber:4
+2st subscriber:4
+1st subscriber:5
+2st subscriber:5
+
+......
+</code></pre><p>跟预想的不一样，第一个订阅者从0开始接收值，第二个订阅者比第一个订阅者晚了一秒，从1开始接受值。</p>
+<p>当使用refCount，是引用计数的observable。它表示当第一个订阅者开始订阅的时候，开始发送和产生值；第二个订阅者（之后的订阅者）共享第一个订阅者的Observables实例，没有订阅者的时候，会自动取消订阅；之后再重新订阅，又从头开始发送值。</p>
+<p>它不是Hot Observables也不是Cold Observables，因为它是从有第一个订阅者的时候才开始发送值，没有订阅者的时候会自动取消订阅，而且之后的订阅者共享第一个订阅者的Observables实例。它是基于Hot Observables与Cold Observables之间的Observables，可以理解为Warm Observables。</p>
+<h2 id="share"><a href="#share" class="headerlink" title="share"></a>share</h2><p>publish和refCount可以生成一个Warm Observables，实际单独使用share操作符可以达到同样的效果，share实际就是publish().refCount()的简写，这次把第二个订阅比第一个订阅晚五秒再开始订阅，具体代码如下：</p>
+<pre><code class="ts">let obs$ = interval(1000).pipe(
+    share()
+)
+
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+    setTimeout(() =&gt; {
+        obs$.subscribe(data =&gt; { console.log(&quot;2st subscriber:&quot; + data) });
+
+    }, 5100);
+
+}, 2000);
+</code></pre>
+<p>输出结果：</p>
+<pre><code>1st subscriber:0
+1st subscriber:1
+1st subscriber:2
+1st subscriber:3
+1st subscriber:4
+1st subscriber:5
+2st subscriber:5
+1st subscriber:6
+2st subscriber:6
+1st subscriber:7
+2st subscriber:7
+
+......
+</code></pre><p>和使用publish().refCount()效果完全一样。</p>
+<h2 id="shareReplay"><a href="#shareReplay" class="headerlink" title="shareReplay"></a>shareReplay</h2><p>在用share()的时候，第二个或者更后面的订阅者开始订阅的时候，都是共享第一订阅者的Observables，比如在上面的例子中，第二个订阅比第一个订阅晚五秒再开始订阅，那么第二个订阅者从5开始接收值。但是实际情况中，如果我想让第二个订阅者也能拿到前面的值，那怎么办呢？用shareReplay()可以实现。具体代码如下：</p>
+<pre><code class="ts">let obs$ = interval(1000).pipe(
+    shareReplay(1)
+)
+
+setTimeout(() =&gt; {
+    obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
+    setTimeout(() =&gt; {
+        obs$.subscribe(data =&gt; { console.log(&quot;2st subscriber:&quot; + data) });
+
+    }, 5100);
+
+}, 2000);
+</code></pre>
+<p>输出结果：</p>
+<pre><code>1st subscriber:0
+1st subscriber:1
+1st subscriber:2
+1st subscriber:3
+1st subscriber:4
+2st subscriber:4
+1st subscriber:5
+2st subscriber:5
+1st subscriber:6
+2st subscriber:6
+1st subscriber:7
+2st subscriber:7
+
+......
+</code></pre><p> shareReplay(1)中的1表示拿到错过的前一个值，在我们的例子就是第二个订阅从4开始接受值。如果改成shareReplay(2)就表示从错过的前两个值开始接受值，也就是第二个订阅会从3开始接受值。</p>
+<p> shareReplay(1)其实也是publishReplay(1).refCount()的简写，用publishReplay(1).refCount()有同样的效果。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p> 在这篇文章中，我们介绍了：</p>
+<ul>
+<li>什么是Cold Observables和Hot Observables，以及两者的区别</li>
+<li>怎么创建Hot Observables</li>
+<li>什么是Warm Observables，以及怎么用shareReplay()去拿到订阅者错过的值</li>
+</ul>
 
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2019/07/07/test/">
-    <time datetime="2019-07-07T06:16:35.000Z" class="entry-date">
-        2019-07-07
+    <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
     </time>
 </a>
     
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/書情詩話/">書情詩話</a>
-  </div>
-
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/天净沙/">天净沙</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/格律词/">格律词</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
 
     </footer>
 </article>
@@ -126,7 +317,7 @@
 
 
   
-    <article id="post-与雪球网交互抓取股票数据" class="post-与雪球网交互抓取股票数据 post type-post status-publish format-standard hentry">
+    <article id="post-2019-07-25-rxjs-subject" class="post-2019-07-25-rxjs-subject post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -134,44 +325,242 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+      <a class="article-title" href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2017/11/14/与雪球网交互抓取股票数据/" data-id="ckb0jwxw30006xr9kwp5tlz5c" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-07-25-rxjs-subject/" data-id="ckb3lzhp20004ho9kbc7ttxrm" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>这些天写了一个简单的与雪球网交互的小程序，功能是运行后可以获取实时的股票价格，还有股票的历史价格，并将历史价格绘制成走势图。<br>python在爬虫方面有urllib、requests、BeautifulSoup4等工具库。urllib可用于抓取静态页面的html文本，requests可用于向网页发送请求(get/post)并获取返回的响应，BeautifulSoup库可用于对html页面的解析。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#设置matplotlib中文字体</span></span><br><span class="line">font = FontProperties(fname=<span class="string">r"c:\\windows\\fonts\\simsun.ttc"</span>, size=<span class="number">14</span>) </span><br><span class="line"><span class="comment">#伪装浏览器登录</span></span><br><span class="line">headers=&#123;</span><br><span class="line">	<span class="string">"User-Agent"</span>:<span class="string">"Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">#可以写一个url管理器来对url列表进行操作，此处先行指定几个</span></span><br><span class="line">url=[<span class="string">"https://xueqiu.com/S/NVDA"</span>,<span class="string">"https://xueqiu.com/S/AMD"</span>,<span class="string">"https://xueqiu.com/S/TSLA"</span>,<span class="string">"https://xueqiu.com/S/BABA"</span>,<span class="string">"https://xueqiu.com/S/AAPL"</span>]</span><br><span class="line"><span class="comment">#抓取现在股票价格</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_price</span><span class="params">(url)</span>:</span></span><br><span class="line">	response=urllib.request.Request(url,headers=headers)</span><br><span class="line">	html=urllib.request.urlopen(response).read().decode(<span class="string">"utf-8"</span>)</span><br><span class="line">	soup=BeautifulSoup(html,<span class="string">"html.parser"</span>)</span><br><span class="line">	name=soup.find(<span class="string">"div"</span>,class_=<span class="string">"stock-name"</span>).get_text()</span><br><span class="line">	price=soup.find(<span class="string">"div"</span>,class_=<span class="string">"stock-current"</span>).get_text()</span><br><span class="line">	print(name+<span class="string">"现在的股价是:"</span>+price)</span><br></pre></td></tr></table></figure>
-        
-          <p class="article-more-link">
-            <a href="/2017/11/14/与雪球网交互抓取股票数据/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
+        <p>在RxJS中有四种Subject分别是：Subject，BehaviorSubject，AsyncSubject，ReplaySubject；这四种Subject都是特殊的Observable。</p>
+<p>在介绍它们之前，我们先来看下这四种Subject与普通Observable的区别：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Observable</th>
+<th style="text-align:center">Subject</th>
+<th style="text-align:center">BehaviorSubject</th>
+<th style="text-align:center">AsyncSubject</th>
+<th style="text-align:center">ReplaySubject</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Cold</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+</tr>
+<tr>
+<td style="text-align:center">数据生成者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+</tr>
+<tr>
+<td style="text-align:center">单播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+</tr>
+<tr>
+<td style="text-align:center">每次从头开始把值发给观察者</td>
+<td style="text-align:center">将值多播给已注册监听该 Subject 的观察者们</td>
+<td style="text-align:center">把最后一个值（当前值）发送给观察者（需要初始值）</td>
+<td style="text-align:center">执行的最后一个值发送给观察者相当于last()</td>
+<td style="text-align:center">可以把之前的值发送给观察者（错过的值）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Cold-vs-Hot"><a href="#Cold-vs-Hot" class="headerlink" title="Cold vs Hot"></a>Cold vs Hot</h2><p>在文章【<a href="https://limeii.github.io/2019/07/rxjs-coldhot-observable/" target="_blank" rel="noopener">RxJS：Cold vs Hot Observables</a>】里详细介绍了Cold Observables与Hot Observables的区别，除了Observable之外，这四种Subject都是Hot Observables。</p>
+<h2 id="数据生产者-vs-数据消费者"><a href="#数据生产者-vs-数据消费者" class="headerlink" title="数据生产者 vs 数据消费者"></a>数据生产者 vs 数据消费者</h2><ul>
+<li><strong>数据生产者</strong>是指Observable(可观察对象)，产生数据的一方。</li>
+</ul>
+<ul>
+<li><strong>数据消费者</strong>是指Observers(观察者)，接收数据的一方。</li>
+</ul>
+<p>普通的Observable只是数据生产者，发送数据。而Subject，BehaviorSubject，AsyncSubject和ReplaySubject即是生产者又是消费者。比如在angular项目中，我们经常用Subject在多个component中共享数据：</p>
+<pre><code class="ts">// messageService.ts
+private shareData: Subject&lt;string&gt; = new Subject&lt;string&gt;();
+
+sendData(value: string) {
+    this.shareData.next(value);
+}
+getData(): Observable&lt;string&gt; {
+    return this.shareData.asObservable();
+}
+
+</code></pre>
+<pre><code class="ts">// RxjsSubjectBComponent
+// send data from RxjsSubjectBComponent
+  this.messageService.sendData(&quot;this message from subject b&quot;);
+</code></pre>
+<pre><code class="ts">// RxjsSubjectCComponent
+// get data in RxjsSubjectCComponent
+this.subscription = this.messageService.getData()
+    .subscribe(val =&gt; {
+        this.message = val;
+        console.log(val);
+    });
+</code></pre>
+<p>在这两个component中通过定义在messageService的Subject共享数据，通过next()方法使得Subject是数据生产者（可观察对象），通过asObservable()使得Subject是数据消费者（Observers）。</p>
+<h2 id="单播-vs-多播"><a href="#单播-vs-多播" class="headerlink" title="单播 vs 多播"></a>单播 vs 多播</h2><p>在上面的代码例子中，不仅是在component c可以订阅拿到数据，在其他component中也可以订阅拿到数据。比如在RxjsSubjectAComponent中定义如下代码：</p>
+<pre><code class="ts">// RxjsSubjectAComponent
+// get data in RxjsSubjectAComponent
+this.subscription = this.messageService.getData()
+    .subscribe(val =&gt; {
+        console.log(&quot;this is in componet A and &quot; + val);
+    })
+</code></pre>
+<p>从RxjsSubjectBComponent发出值，在RxjsSubjectCComponent和RxjsSubjectAComponent能拿到同样的值，这个就是多播。</p>
+<p>普通的Observables是Cold Observables并且是单播的，其他四种Subject是Hot Observables并且是多播的。</p>
+<p>单播的意思是，每个普通的Observables实例都只能被一个观察者订阅，当它被其他观察者订阅的时候会产生一个新的实例。也就是普通Observables被不同的观察者订阅的时候，会有多个实例，不管观察者是从何时开始订阅，每个实例都是从头开始把值发给对应的观察者。</p>
+<h2 id="BehaviorSubject"><a href="#BehaviorSubject" class="headerlink" title="BehaviorSubject"></a>BehaviorSubject</h2><p>Subject其中的一个变体就是BehaviorSubject，它有一个“当前值”的概念。它保存了发送给消费者的最新值，当有新的观察者订阅时，会立即从BehaviorSubject那接收到“当前值”，在定义一个BehaviorSubject时需要有初始值。</p>
+<p>在messageService定义一个BehaviorSubject，初始值是1，updateBehaviorSubject方法把值更新为2，代码如下：</p>
+<pre><code class="ts">//messageService.ts
+private behaviorSubject: BehaviorSubject&lt;number&gt; = new BehaviorSubject&lt;number&gt;(1);
+currentBehaviorSubject = this.behaviorSubject.asObservable();
+updateBehaviorSubject() {
+    this.behaviorSubject.next(2);
+}
+</code></pre>
+<p>并在RxjsSubjectBComponent中调用执行updateBehaviorSubject方法，代码如下：</p>
+<pre><code class="ts">//RxjsSubjectBComponent
+this.messageService.updateBehaviorSubject();
+</code></pre>
+<p>在RxjsSubjectAComponent中订阅behaviorSubject的值，代码如下：</p>
+<pre><code class="ts">let subscription1 = this.messageService.currentBehaviorSubject
+    .subscribe(val =&gt; {
+        console.log(&quot;this is in RxjsSubjectAComponent and Current behavior subject value is  &quot; + val)
+    });
+
+this.subscription.add(subscription1);
+</code></pre>
+<p>在RxjsSubjectCComponent中，等5秒以后在订阅behaviorSubject的值，代码如下：</p>
+<pre><code class="ts">setTimeout(() =&gt; {
+    let subscription1 = this.messageService.currentBehaviorSubject
+        .subscribe(val =&gt; {
+             console.log(&quot;this is in RxjsSubjectCComponent and Current behavior subject value is  &quot; + val)
+        });
+
+}, 5000);
+
+</code></pre>
+<p>运行效果：在RxjsSubjectAComponent中会拿到1和2两个值，在RxjsSubjectCComponent中会拿到2这个值。</p>
+<pre><code>this is in RxjsSubjectAComponent and Current behavior subject value is  1
+this is in RxjsSubjectAComponent and Current behavior subject value is  2
+this is in RxjsSubjectCComponent and Current behavior subject value is  2
+</code></pre><p>如果是正常的Hot Observable在5秒之后，拿不到任何值，因为在五秒内已经把值1和2都发送完了，五秒以后观察者再订阅，没有任何值可以发送了。但是用BehaviorSubject保存了发送给消费者的最新值，当有新的观察者订阅时，会立即从BehaviorSubject那接收到“当前值”，所以RxjsSubjectCComponent的订阅者会拿到2这个值。</p>
+<h2 id="ReplaySubject"><a href="#ReplaySubject" class="headerlink" title="ReplaySubject"></a>ReplaySubject</h2><p>类似于BehaviorSubject，可以发送旧值给新的订阅者，但是不仅是‘当前值’，还可以是之前的旧值。</p>
+<p>在messageService定义一个ReplaySubject，为新的订阅者缓冲3个值，sendReplaySubject方法把1 2 3 4 5五个值发给订阅者，代码如下：</p>
+<pre><code class="ts">//messageService.ts
+private replaySubject: ReplaySubject&lt;number&gt; = new ReplaySubject&lt;number&gt;(3);
+sendReplaySubject() {
+    this.replaySubject.next(1);
+    this.replaySubject.next(2);
+    this.replaySubject.next(3);
+    this.replaySubject.next(4);
+    this.replaySubject.next(5);
+}
+
+getReplaySubject(): Observable&lt;any&gt; {
+    return this.replaySubject.asObservable();
+}
+
+</code></pre>
+<p>在RxjsSubjectBComponent中，调用sendReplaySubject方法：</p>
+<pre><code class="ts">this.messageService.sendReplaySubject();
+</code></pre>
+<p>在RxjsSubjectAComponent中，订阅replaySubject的值，代码如下：</p>
+<pre><code class="ts">let subscription2 = this.messageService.getReplaySubject()
+    .subscribe(val =&gt; {
+        console.log(&quot;this is in RxjsSubjectAComponent and Current Replay subject value is  &quot; + val)
+    });
+
+this.subscription.add(subscription2);
+</code></pre>
+<p>在RxjsSubjectCComponent中，等5秒以后在订阅replaySubject的值，代码如下：</p>
+<pre><code class="ts">setTimeout(() =&gt; {
+    let subscription2 = this.messageService.getReplaySubject()
+        .subscribe(val =&gt; {
+            console.log(&quot;this is in RxjsSubjectCComponent and Current repaly subject value is  &quot; + val)
+        });
+    this.subscription.add(subscription2);
+
+}, 5000);
+</code></pre>
+<p>效果如下：</p>
+<pre><code>this is in RxjsSubjectAComponent and Current Replay subject value is  1
+this is in RxjsSubjectAComponent and Current Replay subject value is  2
+this is in RxjsSubjectAComponent and Current Replay subject value is  3
+this is in RxjsSubjectAComponent and Current Replay subject value is  4
+this is in RxjsSubjectAComponent and Current Replay subject value is  5
+
+this is in RxjsSubjectCComponent and Current repaly subject value is  3
+this is in RxjsSubjectCComponent and Current repaly subject value is  4
+this is in RxjsSubjectCComponent and Current repaly subject value is  5
+
+</code></pre><h2 id="AsyncSubject"><a href="#AsyncSubject" class="headerlink" title="AsyncSubject"></a>AsyncSubject</h2><p>只有当 Observable 执行完成时(执行 complete())，它才会将执行的最后一个值发送给观察者。</p>
+<p>在messageService定义一个AsyncSubject，sendAsyncSubject方法把10001 10002 10003 三个值发给订阅者，代码如下：</p>
+<pre><code class="ts">private asyncSubject: AsyncSubject&lt;number&gt; = new AsyncSubject&lt;number&gt;();
+
+sendAsyncSubject() {
+    this.asyncSubject.next(10001);
+    this.asyncSubject.next(10002);
+    this.asyncSubject.next(10003);
+    this.asyncSubject.complete();
+}
+getAsyncSubject() {
+    return this.asyncSubject.asObservable();
+}
+</code></pre>
+<p>在RxjsSubjectBComponent中，调用sendAsyncSubject方法：</p>
+<pre><code class="ts">this.messageService.sendAsyncSubject();
+</code></pre>
+<p>在RxjsSubjectAComponent中，订阅asyncSubject的值，代码如下：</p>
+<pre><code class="ts">let subscription3 = this.messageService.getAsyncSubject()
+    .subscribe(val =&gt; {
+        console.log(&quot;this is in RxjsSubjectAComponent and Current Async subject value is  &quot; + val)
+    });
+
+this.subscription.add(subscription3);
+</code></pre>
+<p>在RxjsSubjectCComponent中，等5秒以后在订阅asyncSubject的值，代码如下：</p>
+<pre><code class="ts">setTimeout(() =&gt; {
+    let subscription3 = this.messageService.getAsyncSubject()
+        .subscribe(val =&gt; {
+            console.log(&quot;this is in RxjsSubjectCComponent and Current async subject value is  &quot; + val)
+        });
+    this.subscription.add(subscription3);
+
+}, 5000);
+</code></pre>
+<p>效果如下：</p>
+<pre><code>this is in RxjsSubjectAComponent and Current Async subject value is  10003
+this is in RxjsSubjectCComponent and Current async subject value is  10003
+</code></pre>
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2017/11/14/与雪球网交互抓取股票数据/">
-    <time datetime="2017-11-14T11:59:32.000Z" class="entry-date">
-        2017-11-14
+    <a href="/2020/06/04/2019-07-25-rxjs-subject/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
     </time>
 </a>
     
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
-  </div>
-
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据可视化/">数据可视化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据挖掘/">数据挖掘</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
 
     </footer>
 </article>
@@ -187,7 +576,7 @@
 
 
   
-    <article id="post-一个小型微信自动回复机器人" class="post-一个小型微信自动回复机器人 post type-post status-publish format-standard hentry">
+    <article id="post-2019-08-12-rxjs-caching" class="post-2019-08-12-rxjs-caching post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -195,43 +584,201 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+      <a class="article-title" href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2017/10/16/一个小型微信自动回复机器人/" data-id="ckb0jwxw10005xr9kxid0v3mz" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-08-12-rxjs-caching/" data-id="ckb3lzhp30005ho9kvei1qf2y" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>事情的起因是我发现了一个很有趣的python包——itchat。该项目是腾讯开放的一个对微信进行操作的接口，可以对个人、群聊收发消息图片文件等等。具体功能可移步官方文档<a href="http://itchat.readthedocs.io/zh/latest/api/" target="_blank" rel="noopener">ITchat</a>。<br></p>
-        
-          <p class="article-more-link">
-            <a href="/2017/10/16/一个小型微信自动回复机器人/#more" class="more-link">More <span class="meta-nav">→</span></a>
-          </p>
-        
+        <p>在这篇文章中会介绍以下内容：</p>
+<ul>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable。</p>
+</li>
+<li><p>HttpClient Observable每次被订阅都需要调用http request，对于公用的API返回同样的值，在不同页面重复调用会浪费http资源降低性能。</p>
+</li>
+<li><p>如何通过ReplaySubject实现缓存效果，提高性能。</p>
+</li>
+</ul>
+<h2 id="HttpClient返回的Observables是Cold-Observable"><a href="#HttpClient返回的Observables是Cold-Observable" class="headerlink" title="HttpClient返回的Observables是Cold Observable"></a>HttpClient返回的Observables是Cold Observable</h2><p>在Angular2.0以上的版本，都是通过HttpClient跟后端API交互；所有的Http请求方法，比如get，post，put，delete都是返回一个Observable。在文章【<a href="https://limeii.github.io/2019/07/rxjs-coldhot-observable/" target="_blank" rel="noopener">RxJS：Cold vs Hot Observables</a>】里详细介绍了Cold Observables与Hot Observables的区别。</p>
+<p>那么在Angular中通过HttpClient执行Http Request返回的Observables是Hot Observables还是Cold Observables？我们先来写段代码测试下：在页面里显示30个Github user的基本信息，测试代码中用到的API在这里：<a href="https://developer.github.com/v3/users/#get-all-users" target="_blank" rel="noopener">Github API</a>。</p>
+<p>先定义一个service：RxjsCacheService，在这个service中定义一个方法去拿github的用户信息：</p>
+<pre><code class="ts">import { Injectable } from &quot;@angular/core&quot;;
+import { HttpClient } from &quot;@angular/common/http&quot;;
+
+import { User } from &quot;../interface/rxjs-cache.interface&quot;;
+import { map, catchError } from &#39;rxjs/operators&#39;;
+import { of, Observable } from &#39;rxjs&#39;;
+
+@Injectable()
+
+export class RxjsCacheService {
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        return this.requestUsers();
+    }
+
+    private requestUsers() {
+        // get the latest 30 github users: start from id =2
+        return this.http.get&lt;Array&lt;User&gt;&gt;(&quot;https://api.github.com/users?since=1&quot;)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+}
+
+</code></pre>
+<p>接口rxjs-cache.interface定义如下：</p>
+<pre><code class="ts">export interface User {
+    login: string,
+    id: number,
+    node_id: string,
+    avatar_url: string,
+    gravatar_id: string,
+    url: string,
+    html_url: string,
+    followers_url: string,
+    following_url: string,
+    gists_url: string,
+    starred_url: string,
+    subscriptions_url: string,
+    organizations_url: string,
+    repos_url: string,
+    events_url: string,
+    received_events_url: string,
+    type: string,
+    site_admin: boolean
+}
+
+</code></pre>
+<p>然后在定义一个component：RxjsCacheComponent，代码如下：</p>
+<pre><code class="ts">import { Component, OnInit } from &quot;@angular/core&quot;;
+
+import { RxjsCacheService } from &quot;./service/rxjs-cache.service&quot;;
+import { User } from &quot;./interface/rxjs-cache.interface&quot;;
+import { Observable } from &#39;rxjs&#39;;
+
+
+@Component({
+    templateUrl: &quot;./rxjs-cache.component.html&quot;
+})
+
+export class RxjsCacheComponent implements OnInit {
+
+    private users$: Observable&lt;Array&lt;User&gt;&gt;;
+
+    constructor(private rxjsCacheService: RxjsCacheService) { }
+
+    ngOnInit() {
+        this.users$ = this.rxjsCacheService.users;
+    }
+
+}
+</code></pre>
+<p>rxjs-cache.component.html代码如下：</p>
+<pre><code class="html">&lt;h3&gt;here is the github user lists:&lt;/h3&gt;
+
+&lt;div *ngFor=&quot;let user of users$ |async&quot;&gt;
+    &lt;div style=&quot; display: flex;flex-direction: row;&quot;&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 10%&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/div&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 50%&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt; { { user.url } } &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>运行以上代码，在页面上列出了30位github用户的用户名和相应的Github地址，从上面的代码还是不能看出HttpClient返回的Observable是Hot Observables还是Cold Observables。我们把html页面代码改一下：</p>
+<pre><code class="html">&lt;h3&gt;here is the github user lists:&lt;/h3&gt;
+&lt;div *ngFor=&quot;let user of users$ |async&quot;&gt;
+    &lt;div style=&quot; display: flex;flex-direction: row;&quot;&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 10%&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/div&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 50%&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt; { { user.url } } &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;h3&gt;here is the github user lists2:&lt;/h3&gt;
+&lt;div *ngFor=&quot;let user of users$ |async&quot;&gt;
+    &lt;div style=&quot; display: flex;flex-direction: row;&quot;&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 10%&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/div&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 50%&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt; { { user.url } } &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>F12打开浏览器的DevTools，当前页面会调用两次GET API（<a href="https://api.github.com/users?since=1），并且两个user" target="_blank" rel="noopener">https://api.github.com/users?since=1），并且两个user</a> list列出的30位用户信息一模一样：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-cache01.png" alt="rxjs-cache">{:height=”100%” width=”100%”}</p>
+<p>两个userlist订阅users$，生成了两个Observable实例并且都是订阅开始之后才开始发送值，也就是说<strong>Angular中通过HttpClient执行Http Request返回的Observabl是Cold Observable</strong>。</p>
+<h2 id="会有什么样的性能问题？"><a href="#会有什么样的性能问题？" class="headerlink" title="会有什么样的性能问题？"></a>会有什么样的性能问题？</h2><p>每次调用API，都会生成一个新的Observable实例，有订阅之后才开始发送值，这也符合现在前端开发要求。但是实际开发过程中，有时候后端会有提供一些公用的常量API，不同页面都需要用这些常量，按现在的调用API的方式，会导致常量API在不同的页面重复多次被调用，这种方式显然性能不好。</p>
+<p>那可以利用RxJS实现缓存效果吗？也就是第一次调用常量API以后，后续再调用这个API不需要执行Http Request从后端服务器拿值，直接从缓存里拿值？</p>
+<h2 id="通过RxJS实现缓存效果"><a href="#通过RxJS实现缓存效果" class="headerlink" title="通过RxJS实现缓存效果"></a>通过RxJS实现缓存效果</h2><p>在文章【<a href="https://limeii.github.io/2019/07/rxjs-subject/" target="_blank" rel="noopener">RxJS：四种Subject的用法和区别</a>】中详细介绍了ReplaySubject，用ReplaySubject(size)可以发送之前的旧值给新的订阅者，size是定义发送具体多少个旧值给新的订阅者。那么在示例代码中可以用ReplaySubject实现缓存效果。</p>
+<p>shareReplay这个操作符会自动创建一个ReplaySubject，一旦http request执行一次以后，就会在后续的订阅和源头Observable之间建立一个ReplaySubject，ReplaySubject是一个多播的Hot Observable，后续订阅都是从这个中间ReplaySubject拿到最后一个值，从而达到缓存效果。</p>
+<p>我们把service：RxjsCacheService改成如下：</p>
+<pre><code class="ts">import { Injectable } from &quot;@angular/core&quot;;
+import { HttpClient } from &quot;@angular/common/http&quot;;
+
+import { User } from &quot;../interface/rxjs-cache.interface&quot;;
+import { map, catchError, shareReplay } from &#39;rxjs/operators&#39;;
+import { of, Observable } from &#39;rxjs&#39;;
+
+
+const CACHE_SIZE = 1;
+
+@Injectable()
+
+export class RxjsCacheService {
+
+    private cacheUsers$:Observable&lt;Array&lt;User&gt;&gt;;
+
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        if(!this.cacheUsers$){
+            this.cacheUsers$ = this.requestUsers()
+            .pipe(
+                shareReplay(CACHE_SIZE)
+            );
+        }
+       return this.cacheUsers$;
+    }
+
+    private requestUsers() {
+        return this.http.get&lt;Array&lt;User&gt;&gt;(&quot;https://api.github.com/users?since=1&quot;)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+}
+</code></pre>
+<p>运行以上代码发现，页面里两个user list都是列出了相同的30位Github用户信息，但是只调用了一次GET API（<a href="https://api.github.com/users?since=1），也就是说第二订阅不是从通过后端API拿到用户信息，而是从ReplaySubject中拿到的。" target="_blank" rel="noopener">https://api.github.com/users?since=1），也就是说第二订阅不是从通过后端API拿到用户信息，而是从ReplaySubject中拿到的。</a></p>
+<p>整个流程如下：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-cache02.png" alt="rxjs-cache">{:height=”100%” width=”100%”}</p>
+<p>页面的第一个userlist也就是第一个consumer，是通过调用API拿到30个用户信息，第二个userlist也就是第二个consumer，直接从cacheUsers$拿到这30个用户信息。cacheUsers$是ReplaySubject(1)把最后一个旧值（30个用户信息）发送给新的订阅者（第二个userlist），从而实现了缓存效果。</p>
+
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2017/10/16/一个小型微信自动回复机器人/">
-    <time datetime="2017-10-16T08:37:24.000Z" class="entry-date">
-        2017-10-16
+    <a href="/2020/06/04/2019-08-12-rxjs-caching/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
     </time>
 </a>
     
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
-  </div>
-
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动处理/">自动处理</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
 
     </footer>
 </article>
@@ -247,7 +794,7 @@
 
 
   
-    <article id="post-天淨沙·一" class="post-天淨沙·一 post type-post status-publish format-standard hentry">
+    <article id="post-2019-08-15-rxjs-notification" class="post-2019-08-15-rxjs-notification post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -255,41 +802,264 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+      <a class="article-title" href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2016/11/23/天淨沙·一/" data-id="ckb0jwxw40007xr9kl9ztv0qb" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-08-15-rxjs-notification/" data-id="ckb3lzhp40006ho9k9fy2wlbc" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>该词为高中练手之作。看官莫笑。</p>
-<hr>
-<p><strong>啼鶯舞燕殘霞，煙湖畫柳桃花，新友故交天涯。十年剎那，東風褪盡年華。</strong></p>
+        <p>在上一篇文章【<a href="https://limeii.github.io/2019/08/rxjs-caching/" target="_blank" rel="noopener">RxJS：如何通过RxJS实现缓存</a>】里介绍了如何在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，减少重复调用API从而提高性能，这种方法适用于每次返回的Response数据都不变的常量API。在实际开发过程中，还有一种API返回的值随着时间会有变化，这个时候就需要去更新RxJS缓存里的值，从用户体检的角度出发，先在页面显示一个消息通知用户数据有更新，让用户选择是否需要更新页面内容，而不是直接在每次缓存更新以后直接刷新页面数据。接下来就来介绍如何基于RxJS实现简单的消息通知机制。</p>
+<blockquote><br><p><br>这篇文章里用到的<font color="#0000FF">RxJS缓存</font>都是指在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，后续新的订阅者都可以直接从ReplaySubject拿API Response数据。<br></p><br></blockquote>
+
+<h2 id="更新RxJS缓存"><a href="#更新RxJS缓存" class="headerlink" title="更新RxJS缓存"></a>更新RxJS缓存</h2><p>关于在什么时候要更新RxJS缓存，不再本文章的讨论范围内，在这里就直接每隔10秒调用一次API，把新拿到的值赋值给RxJS缓存。</p>
+<p>还是用Github的get all users API：<a href="https://developer.github.com/v3/users/#get-all-users" target="_blank" rel="noopener">Github API</a>，每10s去调用这个API拿到30个不同的github用户信息。用<a href="https://rxjs-cn.github.io/learn-rxjs-operators/operators/creation/interval.html" target="_blank" rel="noopener">interval</a>可以实现每隔10s调用一次API，但是会有一个问题，用户在第一次进到页面的时候需要等10s才能看到30位用户信息。我们希望用户第一次进到页面立马看到30位用户信息，之后是每隔10s调用一次API更新30位git用户信息，<a href="https://rxjs-cn.github.io/learn-rxjs-operators/operators/creation/timer.html" target="_blank" rel="noopener">timer</a>操作符可以满足这个要求，<code>timer(0,10000)</code>表示首次不用等直接调用API拿到30位git用户信息，之后每隔10s调用一次API。Service具体代码如下：</p>
+<pre><code class="ts">const CACHE_SIZE = 1;
+const REFRESH_INTERVAL = 10000;
+const API_ENDPOINT = &quot;https://api.github.com/users?since=&quot;;
+@Injectable()
+export class RxjsNotificationService {
+    private cacheUsers$: Observable&lt;Array&lt;User&gt;&gt;;
+    private userStartId: number = 0;
+
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        if (!this.cacheUsers$) {
+            const timer$ = timer(0, REFRESH_INTERVAL);
+            this.cacheUsers$ = timer$
+                .pipe(
+                    switchMap(() =&gt; this.requestUsers()),
+                    shareReplay(CACHE_SIZE)
+                );
+        }
+        return this.cacheUsers$;
+    }
+
+    private requestUsers() {
+        this.userStartId = this.userStartId + 30;
+        return this.http.get&lt;Array&lt;User&gt;&gt;(API_ENDPOINT + this.userStartId)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+}
+</code></pre>
+<p>定义一个RxjsNotificationComponent，具体代码如下：</p>
+<pre><code class="ts">
+@Component({
+    templateUrl: &quot;./rxjs-notification.component.html&quot;
+
+})
+
+export class RxjsNotificationComponent {
+    users$: Observable&lt;Array&lt;User&gt;&gt;;
+
+    constructor(private rxjsNotificationService: RxjsNotificationService) { }
+
+    ngOnInit() {
+        this.users$ = this.rxjsNotificationService.users.pipe();
+    }
+
+}
+</code></pre>
+<p>rxjs-notification.component.html代码如下：</p>
+<pre><code class="html">&lt;div class=&quot;container&quot; style=&quot;margin-top:30px;width: 40%;&quot;&gt;
+    &lt;div class=&quot;row justify-content-md-center&quot;&gt;
+        &lt;div style=&quot;margin: 10px;&quot; class=&quot;card w-100&quot; *ngFor=&quot;let user of users$ |async&quot;&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;h5 class=&quot;card-title&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/h5&gt;
+                &lt;p class=&quot;card-text&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt;  { { user.url } } &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>运行代码发现，刚进页面会调用一次API，之后每隔10s会去调用一次API更新RxJs缓存，页面的用户信息也是每隔10秒就会更新。这个用户体验并不好，我们不希望用户在浏览页面的时候，每10s页面里的信息就自动更新了。而是希望弹出一个消息通知用户有新的用户信息，让用户选择是否需要更新页面内容。</p>
+<h2 id="基于RxJS的简单消息通知机制"><a href="#基于RxJS的简单消息通知机制" class="headerlink" title="基于RxJS的简单消息通知机制"></a>基于RxJS的简单消息通知机制</h2><p>我们先来理一下整个消息通知的流程：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-notification01.png" alt="rxjs-notification">{:height=”100%” width=”100%”}</p>
+<p>在我们的例子中，页面需要显示30位github用户信息是数据消费者（consumer）。</p>
+<p>当用户进到页面（0s）立马去调用API拿到30位git用户信息放在RxJS缓存里并显示在页面上，之后每隔10s都会去调用一次API拿到全新的30位github用户信息更新RxJS缓存里的数据但不更新页面显示的数据，此时会在页面显示一个消息提醒用户有新数据更新，如果用户点击更新按钮，提醒消息会消失同时新拿到的用户信息会更新在页面上，如果不点击更新按钮，页面列出的github用户信息不更新。</p>
+<p>我们来看下动图效果：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-notification02.gif" alt="rxjs-notification">{:height=”100%” width=”100%”}</p>
+<p>在前面已经把每隔10s去调用一次API的service已经写好了，我们只要在component和html页面里，把剩下的代码写完。</p>
+<p>首先需要拿到第一次进入页面，也就是0s调用API拿到的30位github用户信息，可以通过<a href="https://rxjs-cn.github.io/learn-rxjs-operators/operators/filtering/take.html" target="_blank" rel="noopener">take(1)</a>操作符拿到页面首次加载的30位github用户信息。再定义<code>updateClick$ = new Subject&lt;void&gt;();</code>用户每次点击更新按钮，会再去拿到最后一次API返回的用户信息，然后在通过merge操作符把两个Observable合并，具体代码可以如下：</p>
+<pre><code class="ts">    users$: Observable&lt;Array&lt;User&gt;&gt;;
+    updateClick$ = new Subject&lt;void&gt;();
+
+    constructor(private rxjsNotificationService: RxjsNotificationService) { }
+
+    ngOnInit() {
+        const initialUsers$ = this.getUserOnce();
+
+        const updateUsers$ = this.updateClick$.pipe(
+            mergeMap(() =&gt; this.getUserOnce())
+        );
+
+        this.users$ = merge(initialUsers$, updateUsers$);
+    }
+
+    getUserOnce() {
+        return this.rxjsNotificationService.users.pipe(take(1));
+    }
+</code></pre>
+<p>页面代码如下：</p>
+<pre><code class="html">&lt;div class=&quot;container&quot; style=&quot;margin-top:30px;width: 40%;&quot;&gt;
+    &lt;div class=&quot;row justify-content-md-center&quot;&gt;
+        &lt;div class=&quot;alert alert-warning w-100&quot; role=&quot;alert&quot;&gt;
+            &lt;strong&gt;Warning!&lt;/strong&gt; new user infor available, please click to update!
+            &lt;button type=&quot;button&quot; style=&quot;margin-left: 20px;&quot; class=&quot;btn btn-warning&quot;
+                (click)=&quot;updateClick$.next()&quot;&gt;Update&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row justify-content-md-center&quot;&gt;
+        &lt;div style=&quot;margin: 10px;&quot; class=&quot;card w-100&quot; *ngFor=&quot;let user of users$ |async&quot;&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;h5 class=&quot;card-title&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/h5&gt;
+                &lt;p class=&quot;card-text&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt;  { { user.url } } &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>关于显示和隐藏更新按钮，我们可以通过<a href="https://rxjs-cn.github.io/learn-rxjs-operators/operators/transformation/mapto.html" target="_blank" rel="noopener">mapTo</a>实现:</p>
+<p>component的完整代码如下：</p>
+<pre><code class="ts">import { Component } from &quot;@angular/core&quot;;
+import { Observable, Subject, merge } from &quot;rxjs&quot;;
+
+import { User } from &quot;./interface/rxjs-notification.interface&quot;;
+
+import { RxjsNotificationService } from &quot;./service/rxjs-notification.service&quot;;
+import { take, mergeMap, skip, mapTo } from &#39;rxjs/operators&#39;;
+
+@Component({
+    templateUrl: &quot;./rxjs-notification.component.html&quot;
+
+})
+
+export class RxjsNotificationComponent {
+    users$: Observable&lt;Array&lt;User&gt;&gt;;
+    updateClick$ = new Subject&lt;void&gt;();
+    showNotificatoin$: Observable&lt;boolean&gt;;
+
+    constructor(private rxjsNotificationService: RxjsNotificationService) { }
+
+    ngOnInit() {
+        const initialUsers$ = this.getUserOnce();
+
+        const updateUsers$ = this.updateClick$.pipe(
+            mergeMap(() =&gt; this.getUserOnce())
+        );
+
+        this.users$ = merge(initialUsers$, updateUsers$);
+
+        const initNotification$ = this.getNotifications();
+        const show$ = initNotification$.pipe(mapTo(true));
+        const hide$ = this.updateClick$.pipe(mapTo(false));
+        this.showNotificatoin$ = merge(show$, hide$);
+
+    }
+
+    getUserOnce() {
+        return this.rxjsNotificationService.users.pipe(take(1));
+    }
+
+    getNotifications() {
+        return this.rxjsNotificationService.users.pipe(skip(1));
+    }
+}
+</code></pre>
+<p>html完整代码如下：</p>
+<pre><code class="html">&lt;div class=&quot;container&quot; style=&quot;margin-top:30px;width: 40%;&quot;&gt;
+    &lt;div class=&quot;row justify-content-md-center&quot; *ngIf=&quot;showNotificatoin$ | async&quot;&gt;
+        &lt;div class=&quot;alert alert-warning w-100&quot; role=&quot;alert&quot;&gt;
+            &lt;strong&gt;Warning!&lt;/strong&gt; new user infor available, please click to update!
+            &lt;button type=&quot;button&quot; style=&quot;margin-left: 20px;&quot; class=&quot;btn btn-warning&quot;
+                (click)=&quot;updateClick$.next()&quot;&gt;Update&lt;/button&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;row justify-content-md-center&quot;&gt;
+        &lt;div style=&quot;margin: 10px;&quot; class=&quot;card w-100&quot; *ngFor=&quot;let user of users$ |async&quot;&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+                &lt;h5 class=&quot;card-title&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/h5&gt;
+                &lt;p class=&quot;card-text&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt;  { { user.url } } &lt;/p&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>service 完整代码如下：</p>
+<pre><code class="ts">import { Injectable } from &quot;@angular/core&quot;;
+import { HttpClient } from &quot;@angular/common/http&quot;;
+
+import { User } from &quot;../interface/rxjs-notification.interface&quot;;
+import { map, catchError, shareReplay, switchMap } from &#39;rxjs/operators&#39;;
+import { of, Observable, timer } from &#39;rxjs&#39;;
+
+
+const CACHE_SIZE = 1;
+const REFRESH_INTERVAL = 10000;
+const API_ENDPOINT = &quot;https://api.github.com/users?since=&quot;;
+
+@Injectable()
+
+export class RxjsNotificationService {
+
+    private cacheUsers$: Observable&lt;Array&lt;User&gt;&gt;;
+    private userStartId: number = 0;
+
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        if (!this.cacheUsers$) {
+            const timer$ = timer(0, REFRESH_INTERVAL);
+            this.cacheUsers$ = timer$
+                .pipe(
+                    switchMap(() =&gt; this.requestUsers()),
+                    shareReplay(CACHE_SIZE)
+                );
+        }
+        return this.cacheUsers$;
+    }
+
+    private requestUsers() {
+        this.userStartId = this.userStartId + 30;
+        return this.http.get&lt;Array&lt;User&gt;&gt;(API_ENDPOINT + this.userStartId)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+
+}
+</code></pre>
 
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2016/11/23/天淨沙·一/">
-    <time datetime="2016-11-23T06:16:35.000Z" class="entry-date">
-        2016-11-23
+    <a href="/2020/06/04/2019-08-15-rxjs-notification/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
     </time>
 </a>
     
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/書情詩話/">書情詩話</a>
-  </div>
-
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/天净沙/">天净沙</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/格律词/">格律词</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
 
     </footer>
 </article>
@@ -305,7 +1075,7 @@
 
 
   
-    <article id="post-采桑子" class="post-采桑子 post type-post status-publish format-standard hentry">
+    <article id="post-2019-08-16-rxjs-unsubscribe" class="post-2019-08-16-rxjs-unsubscribe post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -313,41 +1083,195 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2016/11/23/采桑子/">採桑子·一</a>
+      <a class="article-title" href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2016/11/23/采桑子/" data-id="ckb0jwxw7000cxr9k1ey3vpmn" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-08-16-rxjs-unsubscribe/" data-id="ckb3lzhp60009ho9k0lv26u20" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>该词乃高中练手之作。看官莫笑。</p>
-<hr>
-<p><strong>流霜殘月枯枝冷，淚語成詩。淚語成詩，惟嘆人間有情癡。<br>難尋昨日桃花夢，竟惹相思。竟惹相思，今年花開君不知。</strong></p>
+        <p>最开始用RxJS的时候，看官方文档对Subscription的介绍如下：</p>
+<blockquote><br><p><br>What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important method,unsubscribe, that takes no argument and just disposes the resource held by the subscription<br></p><br></blockquote>
+
+<p>从此用RxJS订阅的时候，时刻都不忘调用unsubscribe()以防内存泄漏。对于结束Observable，释放内存的方式有三种方式：</p>
+<ul>
+<li><p>第一种，Observable完成值的发送，执行Observable.onComplete()</p>
+</li>
+<li><p>第二种，Observable发生错误，执行Observable.OnError()</p>
+</li>
+<li><p>第三种，订阅者主动取消订阅，执行subscription.unsubscribe()</p>
+</li>
+</ul>
+<p>对于<code>Observable.onComplete()</code>和<code>Observable.OnError()</code>，RxJS自身会处理这两种情况，所以不需要在代码里再手动取消订阅释放内存。对于第三种方式，Observable还在源源不断的发送值，订阅者想主动取消订阅，那就需要在代码里调用<code>unsubscribe()</code>取消订阅释放内存。</p>
+<p><strong>那么显然在代码中，并不是所有的Observable都需要手动调用unsubscribe()取消订阅。</strong></p>
+<p>在Angular项目中，常用到的订阅以及是否需要调用unsubscribe()取消订阅，有以下几种：</p>
+<ul>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables，订阅这些Observables拿到API返回的数据，不需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>Angular AsyncPipe，不需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>通过Subject，BehaviorSubject，AsyncSubject，ReplaySubject在各个Component之间通信，需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>RxJS自带的一些操作符：take，takeWhile，first等等，不需要调用unsubscribe()取消订阅。</p>
+</li>
+</ul>
+<p>接下来，详细解释下以上几种订阅以及为什么有的需要手动调用unsubscribe()取消订阅，而有些不需要。</p>
+<h2 id="Angular中通过HttpClient执行Http-Request返回的Observables"><a href="#Angular中通过HttpClient执行Http-Request返回的Observables" class="headerlink" title="Angular中通过HttpClient执行Http Request返回的Observables"></a>Angular中通过HttpClient执行Http Request返回的Observables</h2><p>不需要调用unsubscribe()取消订阅的原因有以下两点：</p>
+<ul>
+<li><p>Angular HttpClient源码中，在Http Response结束时，如果Request成功会调用responseObserver.complete()方法结束当前的HttpResponse Observable，如果Request失败会调用responseObserver.error(response)结束当前的HttpResponse Observable。</p>
+</li>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable并且只发送一个值，Cold Observable在值发送完成以后，RxJS会执行OnCompleted方法，表示这个Observable已经结束了，自动释放资源。</p>
+</li>
+</ul>
+<p><strong>对于第一个原因：Aangular源码会处理完成的Http Response Observables。</strong>我们可以直接看Angular的源码，源码地址：<a href="https://github.com/angular/angular/blob/master/packages/http/src/backends/xhr_backend.ts" target="_blank" rel="noopener">/packages/http/src/backends/xhr_backend.ts</a>，关键代码如下：</p>
+<pre><code class="ts">// this Angular http source code, code relative path: angular/packages/http/src/backends/xhr_backend.ts 
+export class XHRConnection implements Connection {
+  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions) {
+    this.request = req;
+    this.response = new Observable&lt;Response&gt;((responseObserver: Observer&lt;Response&gt;) =&gt; {
+       ......
+       ......
+      const onLoad = () =&gt; {
+        const response = new Response(responseOptions);
+        response.ok = isSuccess(status);
+        if (response.ok) {
+          responseObserver.next(response);
+          // response sucess, then call complete to end current responseObserver
+          responseObserver.complete();
+          return;
+        }
+        responseObserver.error(response);
+      };
+
+      const onError = (err: ErrorEvent) =&gt; {
+       ......
+       ......
+        // response error, then call error to end current responseObserver
+        responseObserver.error(new Response(responseOptions));
+      };
+  }
+}
+</code></pre>
+<p>通过源码我们能看到：在Http Response结束时，如果Request成功会调用responseObserver.complete()，如果Request失败会调用responseObserver.error(response)，complete()/error() 方法会结束当前responseObserver。</p>
+<p><strong>对于第二个原因：Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable并且只发送一个值，Cold Observable在值发送完成以后，RxJS会执行OnCompleted方法，自动释放资源。</strong>我们可以通过代码来验证。</p>
+<p>对于HttpClient返回的Observables，在component中有两种订阅方式：</p>
+<ul>
+<li><p>第一种方式是直接在component中显示订阅Http Response Observable拿到API返回的数据。</p>
+</li>
+<li><p>第二种是通过Angular AsyncPipe。</p>
+</li>
+</ul>
+<p>我们先来看第一种订阅方式，AsyncPipe的方式稍后再介绍。在component中显示订阅Http Response Observable拿到API返回的数据,我们来看下具体代码：</p>
+<p>定义一个service，调用Github的get all users API：<a href="https://developer.github.com/v3/users/#get-all-users" target="_blank" rel="noopener">Github API</a>，拿到30位github用户的信息。</p>
+<pre><code class="ts">export class RxjsUnsubscribeService {
+
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        return this.requestUsers();
+    }
+
+    private requestUsers() {
+        return this.http.get&lt;Array&lt;User&gt;&gt;(&quot;https://api.github.com/users?since=35&quot;)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+}
+</code></pre>
+<p>再定义一个component，显示这30位github用户的信息：</p>
+<pre><code class="ts">@Component({
+    templateUrl: &quot;./rxjs-unsubscribe.component.html&quot;
+
+})
+export class RxjsUnsubscribeComponent implements OnInit {
+
+    users: Array&lt;User&gt; = [];
+    constructor(private rxjsUnsubscribeService: RxjsUnsubscribeService) { }
+
+    ngOnInit() {
+        this.rxjsUnsubscribeService.users
+            .subscribe(
+                (data) =&gt; {
+                    this.users = data;
+                },
+                (error) =&gt; {
+                    console.log(&quot;something went wrong: &quot; + error);
+                },
+                () =&gt; {
+                    console.log(&quot;getuser http request has been complete!&quot;);
+                }
+            );
+    }
+}
+
+</code></pre>
+<p>对应的rxjs-unsubscribe.component.html如下：</p>
+<pre><code class="ts">&lt;h3&gt;here is the github user lists:&lt;/h3&gt;
+
+&lt;div *ngFor=&quot;let user of users&quot;&gt;
+    &lt;div style=&quot; display: flex;flex-direction: row;&quot;&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 10%&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/div&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 50%&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt; { { user.url } } &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>运行以上代码，结果如下：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe01.png" alt="rxjs-unsubscribe">{:height=”100%” width=”100%”}</p>
+<p>在console里会有：getuser http request has been complete! 表明Http Response Observable会执行onComplete方法，结束当前的Observable。</p>
+<h2 id="Angular-AsyncPipe"><a href="#Angular-AsyncPipe" class="headerlink" title="Angular AsyncPipe"></a>Angular AsyncPipe</h2><p>在Angular官方文档里，关于<a href="https://angular.io/api/common/AsyncPipe" target="_blank" rel="noopener">AsyncPipe</a>介绍的章节里，明确写了在离开页面销毁component的时候，会自动销毁AsyncPipe订阅的Observables。</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe02.png" alt="rxjs-unsubscribe">{:height=”100%” width=”100%”}</p>
+<p>我们也可以在Git上看AsyncPipe的源码，源码地址：<a href="https://github.com/angular/angular/blob/master/packages/common/src/pipes/async_pipe.ts" target="_blank" rel="noopener">/packages/common/src/pipes/async_pipe.ts </a>，关键代码如下：</p>
+<pre><code class="ts">......
+......
+@Injectable()
+@Pipe({name: &#39;async&#39;, pure: false})
+export class AsyncPipe implements OnDestroy, PipeTransform {
+
+  ......
+  private _subscription: SubscriptionLike|Promise&lt;any&gt;|null = null;
+  ......
+  constructor(private _ref: ChangeDetectorRef) {}
+
+  ngOnDestroy(): void {
+    if (this._subscription) {
+      this._dispose();
+    }
+  }
+  ......
+  ......
+</code></pre>
+<p>在ngOnDestroy方法中，会执行<code>this._dispose()</code>把AsyncPipe的订阅销毁。</p>
+<h2 id="通过四种Subject在各个Component之间通信"><a href="#通过四种Subject在各个Component之间通信" class="headerlink" title="通过四种Subject在各个Component之间通信"></a>通过四种Subject在各个Component之间通信</h2><p>在component之间通信，我们会用到Subject，BehaviorSubject，AsyncSubject，ReplaySubject这四种subject，它们都是Hot Observable，Hot Observable不管有没有被订阅都会源源不断的发送值。如果订阅者要主动取消订阅，就必须手动调用unsubscribe()取消订阅。在Angular component有个钩子函数：ngOnDestroy，在commponet被销毁之前执行，所以一般都是把Subscription的unsubscribe放在这个函数里执行，代码如下：</p>
+<pre><code class="ts">    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+</code></pre>
+<h2 id="RxJS自带的一些操作符：take，takeWhile，first"><a href="#RxJS自带的一些操作符：take，takeWhile，first" class="headerlink" title="RxJS自带的一些操作符：take，takeWhile，first"></a>RxJS自带的一些操作符：take，takeWhile，first</h2><p>在用这些操作符，比如take(1)，拿到Observable发送的第一个值之后，RxJs会主动的停止当前的Observable，也就是销毁当前Observable，并不需要手动再调用unsubscribe()取消订阅。</p>
 
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2016/11/23/采桑子/">
-    <time datetime="2016-11-23T06:13:29.000Z" class="entry-date">
-        2016-11-23
+    <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
     </time>
 </a>
     
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/書情詩話/">書情詩話</a>
-  </div>
-
     
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/格律词/">格律词</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/采桑子/">采桑子</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
 
     </footer>
 </article>
@@ -366,7 +1290,7 @@
   
     <nav id="pagination">
       <nav id="page-nav">
-        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+        <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
       </nav>
     </nav>
   
@@ -399,23 +1323,23 @@
       <ul>
         
           <li>
-            <a href="/2019/07/07/test/">test_post</a>
+            <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
           </li>
         
           <li>
-            <a href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+            <a href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
           </li>
         
           <li>
-            <a href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+            <a href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+            <a href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/采桑子/">採桑子·一</a>
+            <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
           </li>
         
       </ul>
@@ -427,7 +1351,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tags</h3>
     <div class="widget-content">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </aside>
 
@@ -436,7 +1360,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-content tagcloud">
-      <a href="/tags/天净沙/" style="font-size: 15px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 20px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </aside>
 

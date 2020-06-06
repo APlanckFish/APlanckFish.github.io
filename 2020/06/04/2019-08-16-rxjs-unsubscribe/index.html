@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="Miracle">
+  
+
+  
+  
+  
+  
+  
+  
+  <title>RxJS：所有订阅都需要调用unsubscribe取消订阅？ | 一条普朗克长度的鱼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="最开始用RxJS的时候，看官方文档对Subscription的介绍如下： What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important">
+<meta name="keywords" content="RxJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJS：所有订阅都需要调用unsubscribe取消订阅？">
+<meta property="og:url" content="/2020/06/04/2019-08-16-rxjs-unsubscribe/index.html">
+<meta property="og:site_name" content="一条普朗克长度的鱼">
+<meta property="og:description" content="最开始用RxJS的时候，看官方文档对Subscription的介绍如下： What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe01.png">
+<meta property="og:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe02.png">
+<meta property="og:updated_time" content="2020-06-04T09:57:15.867Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJS：所有订阅都需要调用unsubscribe取消订阅？">
+<meta name="twitter:description" content="最开始用RxJS的时候，看官方文档对Subscription的介绍如下： What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important">
+<meta name="twitter:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe01.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
+  <!-- baidu webmaster push -->
+  <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
+</head></html>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="一条普朗克长度的鱼" rel="home">一条普朗克长度的鱼</a>
+      </h1>
+      
+        <h2 class="site-description">
+          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+        </h2>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-2019-08-16-rxjs-unsubscribe" class="post-2019-08-16-rxjs-unsubscribe post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      RxJS：所有订阅都需要调用unsubscribe取消订阅？
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-08-16-rxjs-unsubscribe/" data-id="ckb3lzhp60009ho9k0lv26u20" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>最开始用RxJS的时候，看官方文档对Subscription的介绍如下：</p>
+<blockquote><br><p><br>What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important method,unsubscribe, that takes no argument and just disposes the resource held by the subscription<br></p><br></blockquote>
+
+<p>从此用RxJS订阅的时候，时刻都不忘调用unsubscribe()以防内存泄漏。对于结束Observable，释放内存的方式有三种方式：</p>
+<ul>
+<li><p>第一种，Observable完成值的发送，执行Observable.onComplete()</p>
+</li>
+<li><p>第二种，Observable发生错误，执行Observable.OnError()</p>
+</li>
+<li><p>第三种，订阅者主动取消订阅，执行subscription.unsubscribe()</p>
+</li>
+</ul>
+<p>对于<code>Observable.onComplete()</code>和<code>Observable.OnError()</code>，RxJS自身会处理这两种情况，所以不需要在代码里再手动取消订阅释放内存。对于第三种方式，Observable还在源源不断的发送值，订阅者想主动取消订阅，那就需要在代码里调用<code>unsubscribe()</code>取消订阅释放内存。</p>
+<p><strong>那么显然在代码中，并不是所有的Observable都需要手动调用unsubscribe()取消订阅。</strong></p>
+<p>在Angular项目中，常用到的订阅以及是否需要调用unsubscribe()取消订阅，有以下几种：</p>
+<ul>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables，订阅这些Observables拿到API返回的数据，不需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>Angular AsyncPipe，不需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>通过Subject，BehaviorSubject，AsyncSubject，ReplaySubject在各个Component之间通信，需要调用unsubscribe()取消订阅。</p>
+</li>
+<li><p>RxJS自带的一些操作符：take，takeWhile，first等等，不需要调用unsubscribe()取消订阅。</p>
+</li>
+</ul>
+<p>接下来，详细解释下以上几种订阅以及为什么有的需要手动调用unsubscribe()取消订阅，而有些不需要。</p>
+<h2 id="Angular中通过HttpClient执行Http-Request返回的Observables"><a href="#Angular中通过HttpClient执行Http-Request返回的Observables" class="headerlink" title="Angular中通过HttpClient执行Http Request返回的Observables"></a>Angular中通过HttpClient执行Http Request返回的Observables</h2><p>不需要调用unsubscribe()取消订阅的原因有以下两点：</p>
+<ul>
+<li><p>Angular HttpClient源码中，在Http Response结束时，如果Request成功会调用responseObserver.complete()方法结束当前的HttpResponse Observable，如果Request失败会调用responseObserver.error(response)结束当前的HttpResponse Observable。</p>
+</li>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable并且只发送一个值，Cold Observable在值发送完成以后，RxJS会执行OnCompleted方法，表示这个Observable已经结束了，自动释放资源。</p>
+</li>
+</ul>
+<p><strong>对于第一个原因：Aangular源码会处理完成的Http Response Observables。</strong>我们可以直接看Angular的源码，源码地址：<a href="https://github.com/angular/angular/blob/master/packages/http/src/backends/xhr_backend.ts" target="_blank" rel="noopener">/packages/http/src/backends/xhr_backend.ts</a>，关键代码如下：</p>
+<pre><code class="ts">// this Angular http source code, code relative path: angular/packages/http/src/backends/xhr_backend.ts 
+export class XHRConnection implements Connection {
+  constructor(req: Request, browserXHR: BrowserXhr, baseResponseOptions?: ResponseOptions) {
+    this.request = req;
+    this.response = new Observable&lt;Response&gt;((responseObserver: Observer&lt;Response&gt;) =&gt; {
+       ......
+       ......
+      const onLoad = () =&gt; {
+        const response = new Response(responseOptions);
+        response.ok = isSuccess(status);
+        if (response.ok) {
+          responseObserver.next(response);
+          // response sucess, then call complete to end current responseObserver
+          responseObserver.complete();
+          return;
+        }
+        responseObserver.error(response);
+      };
+
+      const onError = (err: ErrorEvent) =&gt; {
+       ......
+       ......
+        // response error, then call error to end current responseObserver
+        responseObserver.error(new Response(responseOptions));
+      };
+  }
+}
+</code></pre>
+<p>通过源码我们能看到：在Http Response结束时，如果Request成功会调用responseObserver.complete()，如果Request失败会调用responseObserver.error(response)，complete()/error() 方法会结束当前responseObserver。</p>
+<p><strong>对于第二个原因：Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable并且只发送一个值，Cold Observable在值发送完成以后，RxJS会执行OnCompleted方法，自动释放资源。</strong>我们可以通过代码来验证。</p>
+<p>对于HttpClient返回的Observables，在component中有两种订阅方式：</p>
+<ul>
+<li><p>第一种方式是直接在component中显示订阅Http Response Observable拿到API返回的数据。</p>
+</li>
+<li><p>第二种是通过Angular AsyncPipe。</p>
+</li>
+</ul>
+<p>我们先来看第一种订阅方式，AsyncPipe的方式稍后再介绍。在component中显示订阅Http Response Observable拿到API返回的数据,我们来看下具体代码：</p>
+<p>定义一个service，调用Github的get all users API：<a href="https://developer.github.com/v3/users/#get-all-users" target="_blank" rel="noopener">Github API</a>，拿到30位github用户的信息。</p>
+<pre><code class="ts">export class RxjsUnsubscribeService {
+
+    constructor(private http: HttpClient) { }
+
+    get users() {
+        return this.requestUsers();
+    }
+
+    private requestUsers() {
+        return this.http.get&lt;Array&lt;User&gt;&gt;(&quot;https://api.github.com/users?since=35&quot;)
+            .pipe(
+                map(respone =&gt; respone),
+                catchError(error =&gt; {
+                    console.log(&quot;something went wrong &quot; + error)
+                    return of([]);
+                })
+            )
+    }
+}
+</code></pre>
+<p>再定义一个component，显示这30位github用户的信息：</p>
+<pre><code class="ts">@Component({
+    templateUrl: &quot;./rxjs-unsubscribe.component.html&quot;
+
+})
+export class RxjsUnsubscribeComponent implements OnInit {
+
+    users: Array&lt;User&gt; = [];
+    constructor(private rxjsUnsubscribeService: RxjsUnsubscribeService) { }
+
+    ngOnInit() {
+        this.rxjsUnsubscribeService.users
+            .subscribe(
+                (data) =&gt; {
+                    this.users = data;
+                },
+                (error) =&gt; {
+                    console.log(&quot;something went wrong: &quot; + error);
+                },
+                () =&gt; {
+                    console.log(&quot;getuser http request has been complete!&quot;);
+                }
+            );
+    }
+}
+
+</code></pre>
+<p>对应的rxjs-unsubscribe.component.html如下：</p>
+<pre><code class="ts">&lt;h3&gt;here is the github user lists:&lt;/h3&gt;
+
+&lt;div *ngFor=&quot;let user of users&quot;&gt;
+    &lt;div style=&quot; display: flex;flex-direction: row;&quot;&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 10%&quot;&gt;&lt;strong&gt;User Name:&lt;/strong&gt;  { { user.login } } &lt;/div&gt;
+        &lt;div style=&quot;font-size: 0.9em;margin:10px;width: 50%&quot;&gt;&lt;strong&gt;GitHub URL:&lt;/strong&gt; { { user.url } } &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>运行以上代码，结果如下：</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe01.png" alt="rxjs-unsubscribe">{:height=”100%” width=”100%”}</p>
+<p>在console里会有：getuser http request has been complete! 表明Http Response Observable会执行onComplete方法，结束当前的Observable。</p>
+<h2 id="Angular-AsyncPipe"><a href="#Angular-AsyncPipe" class="headerlink" title="Angular AsyncPipe"></a>Angular AsyncPipe</h2><p>在Angular官方文档里，关于<a href="https://angular.io/api/common/AsyncPipe" target="_blank" rel="noopener">AsyncPipe</a>介绍的章节里，明确写了在离开页面销毁component的时候，会自动销毁AsyncPipe订阅的Observables。</p>
+<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-unsubscribe02.png" alt="rxjs-unsubscribe">{:height=”100%” width=”100%”}</p>
+<p>我们也可以在Git上看AsyncPipe的源码，源码地址：<a href="https://github.com/angular/angular/blob/master/packages/common/src/pipes/async_pipe.ts" target="_blank" rel="noopener">/packages/common/src/pipes/async_pipe.ts </a>，关键代码如下：</p>
+<pre><code class="ts">......
+......
+@Injectable()
+@Pipe({name: &#39;async&#39;, pure: false})
+export class AsyncPipe implements OnDestroy, PipeTransform {
+
+  ......
+  private _subscription: SubscriptionLike|Promise&lt;any&gt;|null = null;
+  ......
+  constructor(private _ref: ChangeDetectorRef) {}
+
+  ngOnDestroy(): void {
+    if (this._subscription) {
+      this._dispose();
+    }
+  }
+  ......
+  ......
+</code></pre>
+<p>在ngOnDestroy方法中，会执行<code>this._dispose()</code>把AsyncPipe的订阅销毁。</p>
+<h2 id="通过四种Subject在各个Component之间通信"><a href="#通过四种Subject在各个Component之间通信" class="headerlink" title="通过四种Subject在各个Component之间通信"></a>通过四种Subject在各个Component之间通信</h2><p>在component之间通信，我们会用到Subject，BehaviorSubject，AsyncSubject，ReplaySubject这四种subject，它们都是Hot Observable，Hot Observable不管有没有被订阅都会源源不断的发送值。如果订阅者要主动取消订阅，就必须手动调用unsubscribe()取消订阅。在Angular component有个钩子函数：ngOnDestroy，在commponet被销毁之前执行，所以一般都是把Subscription的unsubscribe放在这个函数里执行，代码如下：</p>
+<pre><code class="ts">    ngOnDestroy() {
+        this.subscription.unsubscribe();
+    }
+</code></pre>
+<h2 id="RxJS自带的一些操作符：take，takeWhile，first"><a href="#RxJS自带的一些操作符：take，takeWhile，first" class="headerlink" title="RxJS自带的一些操作符：take，takeWhile，first"></a>RxJS自带的一些操作符：take，takeWhile，first</h2><p>在用这些操作符，比如take(1)，拿到Observable发送的第一个值之后，RxJs会主动的停止当前的Observable，也就是销毁当前Observable，并不需要手动再调用unsubscribe()取消订阅。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">
+    <time datetime="2020-06-04T09:57:15.866Z" class="entry-date">
+        2020-06-04
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2020/06/04/2019-08-15-rxjs-notification/" rel="prev"><span class="meta-nav">←</span> RxJS：如何通过RxJS实现简单的消息通知机制</a></span>
+    
+    
+        <span class="nav-next"><a href="/2020/06/04/2019-07-05-rxjs-introduce/" rel="next">RxJS入门和概览 <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+  <section id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script> 
+    <script type="text/javascript">
+      const gitalk = new Gitalk({
+        clientID: 'db2f5fcf70a7ab0a2b34',
+        clientSecret: '486eff9025dbc4d4aa01f02c8c15b32a266d76c2',
+        repo: 'git-comments',
+        owner: 'APlanckFish',
+        admin: 'APlanckFish',
+        id: decodeURI(window.location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+      gitalk.render('gitalk-container')
+    </script>
+  </section>
+  
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-content">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2020 陈攀博
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>

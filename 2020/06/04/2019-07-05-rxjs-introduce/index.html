@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="Miracle">
+  
+
+  
+  
+  
+  
+  
+  
+  <title>RxJS入门和概览 | 一条普朗克长度的鱼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
+<meta name="keywords" content="RxJS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RxJS入门和概览">
+<meta property="og:url" content="/2020/06/04/2019-07-05-rxjs-introduce/index.html">
+<meta property="og:site_name" content="一条普朗克长度的鱼">
+<meta property="og:description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png">
+<meta property="og:updated_time" content="2020-06-04T09:57:15.866Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="RxJS入门和概览">
+<meta name="twitter:description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
+<meta name="twitter:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
+  <!-- baidu webmaster push -->
+  <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
+</head></html>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="一条普朗克长度的鱼" rel="home">一条普朗克长度的鱼</a>
+      </h1>
+      
+        <h2 class="site-description">
+          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+        </h2>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-2019-07-05-rxjs-introduce" class="post-2019-07-05-rxjs-introduce post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title article-title">
+      RxJS入门和概览
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/06/04/2019-07-05-rxjs-introduce/" data-id="ckb3lzhow0000ho9kpqw1260u" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>RxJS是<code>Reactive Extensions For JavaScript</code>的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。</p>
+<h2 id="什么是响应式编程（Reactive-Programming）？"><a href="#什么是响应式编程（Reactive-Programming）？" class="headerlink" title="什么是响应式编程（Reactive Programming）？"></a>什么是响应式编程（Reactive Programming）？</h2><p>任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任何变量、用户输入、属性、缓存、数据结构等，响应式编程把所有事物都看成是数据流。数据流是类似数组一样的序列，可以像数组一样，用merge、map、concat等方法操作。简单来说就是：把所有事物都事件流化，然后把这些事件流像数组一样去操作，就是响应式编程。</p>
+<p>RxJS提供了各种API来创建数据流：</p>
+<ul>
+<li>单值：of, empty, never</li>
+<li>多值：from</li>
+<li>定时：interval, timer</li>
+<li>从事件创建：fromEvent</li>
+<li>从Promise创建：fromPromise</li>
+<li>自定义创建：create</li>
+</ul>
+<p>创建出来的数据流，是一种类似数组一样的序列，可以被订阅，也可以用如下API操作控制：</p>
+<ul>
+<li>改变数据形态：map, mapTo, pluck</li>
+<li>过滤一些值：filter, skip, first, last, take</li>
+<li>时间轴上的操作：delay, timeout, throttle, debounce, audit, bufferTime</li>
+<li>累加：reduce, scan</li>
+<li>异常处理：throw, catch, retry, finally</li>
+<li>条件执行：takeUntil, delayWhen, retryWhen, subscribeOn, ObserveOn</li>
+<li>转接：switch</li>
+<li>concat，保持原来的序列顺序连接两个数据流</li>
+<li>merge，合并序列</li>
+<li>race，预设条件为其中一个数据流完成</li>
+<li>forkJoin，预设条件为所有数据流都完成</li>
+<li>zip，取各来源数据流最后一个值合并为对象</li>
+<li>combineLatest，取各来源数据流最后一个值合并为数组</li>
+</ul>
+<h2 id="异步事件流"><a href="#异步事件流" class="headerlink" title="异步事件流"></a>异步事件流</h2><p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png" alt="rxjs-data-stream">{:height=”70%” width=”70%”}</p>
+<p>在上图中有如下几种东西：</p>
+<ul>
+<li>click事件流</li>
+<li>事件流产生的值</li>
+<li>错误</li>
+<li>事件流结束</li>
+<li>时间轴</li>
+</ul>
+<p>点击一个按钮事件，随着时间推移，这个点击事件会产生三个不同的结果：值，发生错误，事件完成。我们可以定义方法用来：捕获值，捕获错误，捕获点击事件结束。在这个过程中，涉及到以下几个RxJS的基本概念：</p>
+<blockquote><br><p><br><strong>Observable(可观察对象)</strong>：就是点击事件流。<br></p><br><br><p><br><strong>Observers(观察者)</strong>：就是捕获值/错误/事件结束的方法（其实就是回调函数集合)。<br></p><br><br><p><br><strong>Subscription(订阅)</strong>：Observable产生的值都需要通过一个‘监听’把值传给Observers，这个‘监听’就是Subscription。<br></p><br><br><p><br> <strong>生产者 (Producer)</strong>：就是点击事件，是事件的生产者。<br></p><br></blockquote>
+
+<p>我们也可以用ASCII来描述这个事件流：</p>
+<pre><code>--a---b-c---d---X---|-&gt;
+
+a b c d 是产生的值
+X 是错误
+| 是事件结束标志
+---&gt; 是时间线
+
+</code></pre><h2 id="为什么要有响应式编程？"><a href="#为什么要有响应式编程？" class="headerlink" title="为什么要有响应式编程？"></a>为什么要有响应式编程？</h2><p>我们先来看一个实际的例子：页面上有一个按钮，现在需要统计按钮点击次数。</p>
+<p>在没有RxJS，代码可以写成这样：</p>
+<pre><code class="js">var counter = 0;
+
+document.getElementById(&quot;myBtn&quot;).addEventListener(&quot;click&quot;, function () {
+    counter = counter + 1;
+});
+
+</code></pre>
+<p>用RxJS，代码如下：</p>
+<pre><code class="js">let button = document.getElementById(&quot;myBtn&quot;);
+
+let clickStream$ = fromEvent(button, &quot;click&quot;);
+
+let counterStream$ = clickStream$.pipe(
+    map((data) =&gt; { return 1 }),
+    scan((acc, curr) =&gt; acc + curr, 0)
+);
+
+counterStream$.subscribe(data =&gt; {
+    console.log(&quot;this is the click counter: &quot; + data);
+});
+</code></pre>
+<p>整个事件流可以用ASCII描述如下：</p>
+<pre><code> clickStream: ---c----c--c----c------c--&gt;
+                   map(c becomes 1) 
+               ---1----1--1----1------1--&gt;
+                   scan(+) 
+counterStream: ---1----2--3----4------5--&gt;
+</code></pre><p>点击事件可以看成是数据流（clickStream），在clickStream事件流基础上用方法<code>map</code>把每次点击事件转化成1，然后用 <code>scan</code>把所有的点击次数加起来，当我们执行map或者scan的时候都会在原来的数据流基础上生产一个新的数据流，原来的数据流不变。</p>
+<p>从上面的这个例子还不能看出RxJS的强大和优势，我们现在再来看下：统计出双击事件次数，或者多次点击（两次或两次以上）都统计为双击次数。如果要用传统的代码实现这个需求，肯定要有很多变量来声明各种状态而且还要用到intervals，代码逻辑复杂且容易出错。但是在响应式编程里十分简单，实际只需要四行代码！</p>
+<p>我们先用ASCII把流程画一下：</p>
+<pre><code>   clickStream: ----c----c-c---c-cc---ccc---c----|-&gt;
+                buff(clickStream.throttleTime(250ms))
+                ----c----cc-----ccc---ccc---c----|-&gt;
+                    map(&#39;get length of lists&#39;)
+                ----1-----2------3-----3----1----|-&gt;
+                    filter(x&gt;=2)                  
+mulClickStream: ----------2------3-----3---------|-&gt;
+
+</code></pre><p>具体代码如下：</p>
+<pre><code class="ts">let button = document.getElementById(&quot;myBtn&quot;);
+
+let clickStream$ = fromEvent(button, &quot;click&quot;);
+
+let doubleClickStream$ = clickStream$
+    .pipe(
+        buffer(clickStream$.pipe(throttleTime(250))),
+        map(click =&gt; { return click.length }),
+        filter(num =&gt; num &gt;= 2)
+    )
+
+doubleClickStream$.subscribe(data =&gt; {
+    console.log(&quot;the number of double click is: &quot; + data);;
+});
+</code></pre>
+<p>从上面这个简单的例子，我们可以看到RxJS提供大量的操作符，处理不同的业务需求，短短几行代码可以涵盖很复杂的代码逻辑，在前端交互非常复杂的系统中，客户端都是基于事件编程的，对事件处理非常多，用RxJS比较有优势。当然响应式编程不仅仅是在JS里存在，它还支持各种语言，比如：RxJava、Rx.NET、RxPY、RxGo等等。</p>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/06/04/2019-07-05-rxjs-introduce/">
+    <time datetime="2020-06-04T09:57:15.865Z" class="entry-date">
+        2020-06-04
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+    
+<nav class="nav-single">
+    <h3 class="assistive-text">文章导航</h3>
+    
+        <span class="nav-previous"><a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/" rel="prev"><span class="meta-nav">←</span> RxJS：所有订阅都需要调用unsubscribe取消订阅？</a></span>
+    
+    
+        <span class="nav-next"><a href="/2019/07/07/test/" rel="next">test_post <span class="meta-nav">→</span></a></span>
+    
+</nav><!-- .nav-single -->
+
+
+
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+  <section id="comments">
+    <div id="gitalk-container"></div>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+    <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script> 
+    <script type="text/javascript">
+      const gitalk = new Gitalk({
+        clientID: 'db2f5fcf70a7ab0a2b34',
+        clientSecret: '486eff9025dbc4d4aa01f02c8c15b32a266d76c2',
+        repo: 'git-comments',
+        owner: 'APlanckFish',
+        admin: 'APlanckFish',
+        id: decodeURI(window.location.pathname),      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+      })
+      gitalk.render('gitalk-container')
+    </script>
+  </section>
+  
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-content">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2020 陈攀博
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>

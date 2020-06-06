@@ -34,9 +34,27 @@
   <link rel="stylesheet" href="/css/style.css">
   
 
-  
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
   <!-- baidu webmaster push -->
   <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
 </head></html>
 <body class="home blog custom-background custom-font-enabled single-author">
   <div id="page" class="hfeed site">
@@ -85,7 +103,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2017/10/16/一个小型微信自动回复机器人/" data-id="ckb0jwxw10005xr9kxid0v3mz" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
+            <a href="javascript:void(0);" data-url="/2017/10/16/一个小型微信自动回复机器人/" data-id="ckb3lzhpb000hho9kzvfioi1b" class="leave-reply bdsharebuttonbox" data-cmd="more">Share</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -99,22 +117,22 @@ import itchat
 def Turing_response(msg):
     apiUrl=&quot;http://www.tuling123.com/openapi/api&quot;
     data = {
-        &apos;key&apos;    : &apos;7f5b71d6ecc548fc861ce5de63df85eb&apos;, # 我申请的图灵key
-        &apos;info&apos;   : msg, # 这是我们发出去的消息
-        &apos;userid&apos; : &apos;APlanckFish&apos;, # 我的名字
+        &#39;key&#39;    : &#39;7f5b71d6ecc548fc861ce5de63df85eb&#39;, # 我申请的图灵key
+        &#39;info&#39;   : msg, # 这是我们发出去的消息
+        &#39;userid&#39; : &#39;APlanckFish&#39;, # 我的名字
     }
     try:
         r=requests.post(apiUrl,data=data).json()
-        return r.get(&apos;text&apos;)
+        return r.get(&#39;text&#39;)
     except:
         return None
 # 这是与图灵服务器交互的程序
 
 @itchat.msg_register(itchat.content.TEXT)
 def turing_reply(msg):
-    defaultReply=&quot;我收到了:&quot;+msg[&apos;Text&apos;]
+    defaultReply=&quot;我收到了:&quot;+msg[&#39;Text&#39;]
     #设置默认回复，防止服务器无响应
-    reply=Turing_response(msg[&apos;Text&apos;])
+    reply=Turing_response(msg[&#39;Text&#39;])
     #调用图灵服务器回复
     return reply or defaultReply
     #a or b 意思是如果a不为None，则返回a，否则返回b
@@ -213,23 +231,23 @@ itchat.run()
       <ul>
         
           <li>
-            <a href="/2019/07/07/test/">test_post</a>
+            <a href="/2020/06/04/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
           </li>
         
           <li>
-            <a href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+            <a href="/2020/06/04/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
           </li>
         
           <li>
-            <a href="/2017/10/16/一个小型微信自动回复机器人/">一个小型微信自动回复机器人</a>
+            <a href="/2020/06/04/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/天淨沙·一/">天淨沙·一</a>
+            <a href="/2020/06/04/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
           </li>
         
           <li>
-            <a href="/2016/11/23/采桑子/">採桑子·一</a>
+            <a href="/2020/06/04/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
           </li>
         
       </ul>
@@ -241,7 +259,7 @@ itchat.run()
   <aside class="widget">
     <h3 class="widget-title">Tags</h3>
     <div class="widget-content">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
     </div>
   </aside>
 
@@ -250,7 +268,7 @@ itchat.run()
   <aside class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-content tagcloud">
-      <a href="/tags/天净沙/" style="font-size: 15px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 20px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
     </div>
   </aside>
 
