@@ -68,7 +68,8 @@
       </h1>
       
         <h2 class="site-description">
-          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+          <!-- <a href="/" id="subtitle" class="helloTitle">若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。</a> -->
+          <a href="/" id="subtitle" class="helloTitle">loading...</a>
         </h2>
       
     </hgroup>
@@ -89,6 +90,32 @@
             </div>
     </nav>
 </header>
+
+<script>
+  function GetRandomNum(Min,Max)
+   {
+     var Range = Max - Min;
+     var Rand = Math.random();
+     return(Min + Math.round(Rand * Range));
+   }
+ function setSidebarMarginTop (headerOffset) {
+     return $('#sidebar').css({ 'margin-top': headerOffset });
+   }
+  function getHeaderOffset () {
+     return $('.header-inner').height();
+   }
+   window.onload=function(){
+     var subtitle = "若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。";
+      var mytitle = subtitle.split("W");
+      var max = mytitle.length-1;
+      var index = GetRandomNum(0,max);
+      var text = mytitle[index];
+      $(".helloTitle").html(text);
+      var headOffset = getHeaderOffset();
+      setSidebarMarginTop(headOffset);
+    // alert(getHeaderOffset());
+   }
+ </script>
 
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main"><article id="post-2019-08-16-rxjs-unsubscribe" class="post-2019-08-16-rxjs-unsubscribe post type-post status-publish format-standard hentry">

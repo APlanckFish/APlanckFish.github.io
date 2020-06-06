@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="一条普朗克长度的鱼">
 <meta property="og:description" content="RxJS中Observables分为两种：Cold Observables和Hot Observables，这两个到底有什么区别呢？我们先来看下RxJS官方给出的解释： Cold observables start running upon subscription, i.e., the observable sequence only starts pushing values to the o">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2020-06-06T07:08:24.736Z">
+<meta property="og:updated_time" content="2020-06-06T12:32:27.104Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="RxJS：Cold vs Hot Observables">
 <meta name="twitter:description" content="RxJS中Observables分为两种：Cold Observables和Hot Observables，这两个到底有什么区别呢？我们先来看下RxJS官方给出的解释： Cold observables start running upon subscription, i.e., the observable sequence only starts pushing values to the o">
@@ -65,7 +65,8 @@
       </h1>
       
         <h2 class="site-description">
-          <a href="/" id="subtitle">若教眼底无离恨，不信人间有白头</a>
+          <!-- <a href="/" id="subtitle" class="helloTitle">若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。</a> -->
+          <a href="/" id="subtitle" class="helloTitle">loading...</a>
         </h2>
       
     </hgroup>
@@ -86,6 +87,32 @@
             </div>
     </nav>
 </header>
+
+<script>
+  function GetRandomNum(Min,Max)
+   {
+     var Range = Max - Min;
+     var Rand = Math.random();
+     return(Min + Math.round(Rand * Range));
+   }
+ function setSidebarMarginTop (headerOffset) {
+     return $('#sidebar').css({ 'margin-top': headerOffset });
+   }
+  function getHeaderOffset () {
+     return $('.header-inner').height();
+   }
+   window.onload=function(){
+     var subtitle = "若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。";
+      var mytitle = subtitle.split("W");
+      var max = mytitle.length-1;
+      var index = GetRandomNum(0,max);
+      var text = mytitle[index];
+      $(".helloTitle").html(text);
+      var headOffset = getHeaderOffset();
+      setSidebarMarginTop(headOffset);
+    // alert(getHeaderOffset());
+   }
+ </script>
 
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main"><article id="post-2019-07-12-rxjs-coldhot-observable" class="post-2019-07-12-rxjs-coldhot-observable post type-post status-publish format-standard hentry">
@@ -120,7 +147,7 @@
 </li>
 </ul>
 <p>单看文字解释，还是不太能理解，那自己先动手写几个Observables看看。具体代码在这里：<a href="https://github.com/LiMeii/angular-rxjs/tree/master/src/app/modules/rxjs-cold-hot" target="_blank" rel="noopener">angular-rxjs</a></p>
-<h2 id="Cold-Observables"><a href="#Cold-Observables" class="headerlink" title="Cold Observables"></a>Cold Observables</h2><pre><code class="javascript">let obs$ = from([1, 2, 3, 4, 5]);
+<h2 id="Cold-Observables"><a href="#Cold-Observables" class="headerlink" title="Cold Observables"></a>Cold Observables</h2><pre><code class="ts">let obs$ = from([1, 2, 3, 4, 5]);
 
 obs$.subscribe(data =&gt; { console.log(&quot;1st subscriber:&quot; + data) });
 obs$.subscribe(data =&gt; { console.log(&quot;2nd subscriber:&quot; + data) });
@@ -145,6 +172,7 @@ setTimeout(() =&gt; {
 }, 1100);
 </code></pre>
 <p>结果还是跟上面一样，没有任何区别。这个是Cold Observables，两个订阅分别有两个订阅实例，是单播的，在没有开始订阅之前，obs$是不发送值，一旦开始订阅，不管是从什么时候开始，obs$都是从第一个值开始发送值，所以两个订阅接收到值没有区别。</p>
+<a id="more"></a> 
 <h2 id="Hot-Observables"><a href="#Hot-Observables" class="headerlink" title="Hot Observables"></a>Hot Observables</h2><p>我先把前面Cold Observables改成Hot Observables，代码如下，先忽略publish，ConnectableObservable，connect，稍后再详细解释。</p>
 <pre><code>let obs$ = from([1, 2, 3, 4, 5]).pipe(
     publish()
