@@ -1,0 +1,40 @@
+# Header
+menu:
+  Home: /
+  Archives: /archives
+  About: /about
+
+# Content
+excerpt_link: More
+prev: Prev
+next: Next
+reply: Reply
+share: Share
+fancybox: true
+
+# Sidebar
+widgets:
+- search
+- music
+- category
+- recent_posts
+- tag
+- tagcloud
+
+# Miscellaneous
+google_analytics:
+duoshuo_shortname: 
+rss: 
+google_site_verification: 
+baidu_site_verification: 
+favicon: 
+music: 
+# Gitment
+# Introduction: https://imsun.net/posts/gitment-introduction/
+gittalk:
+  enable: true
+  githubID: APlanckFish
+  ClientID: db2f5fcf70a7ab0a2b34
+  ClientSecret: 486eff9025dbc4d4aa01f02c8c15b32a266d76c2
+  repo: git-comments
+  lazy: false
