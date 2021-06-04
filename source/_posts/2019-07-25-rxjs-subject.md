@@ -1,7 +1,8 @@
 ---
 title: RxJS：四种Subject的用法和区别
 tags: RxJS
-layout: post
+date: 2020-5-26 14:16:35
+# layout: post
 ---
 
 在RxJS中有四种Subject分别是：Subject，BehaviorSubject，AsyncSubject，ReplaySubject；这四种Subject都是特殊的Observable。
@@ -15,7 +16,7 @@ Cold | Hot | Hot | Hot | Hot
 数据生成者 | 数据生成者和消费者 | 数据生成者和消费者 | 数据生成者和消费者  | 数据生成者和消费者
 单播 | 多播 | 多播 | 多播 |  多播
 每次从头开始把值发给观察者| 将值多播给已注册监听该 Subject 的观察者们 | 把最后一个值（当前值）发送给观察者（需要初始值） |  执行的最后一个值发送给观察者相当于last()  |  可以把之前的值发送给观察者（错过的值）
-
+<!--more-->
 ## Cold vs Hot
 
 在文章【[RxJS：Cold vs Hot Observables](https://limeii.github.io/2019/07/rxjs-coldhot-observable/)】里详细介绍了Cold Observables与Hot Observables的区别，除了Observable之外，这四种Subject都是Hot Observables。

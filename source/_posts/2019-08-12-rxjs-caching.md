@@ -1,7 +1,8 @@
 ---
 title: RxJS：如何通过RxJS实现缓存
 tags: RxJS
-layout: post
+date: 2020-5-26 14:16:35
+# layout: post
 ---
 
 在这篇文章中会介绍以下内容：
@@ -12,7 +13,7 @@ layout: post
 
 - 如何通过ReplaySubject实现缓存效果，提高性能。
 
-
+<!--more-->
 ## HttpClient返回的Observables是Cold Observable
 
 在Angular2.0以上的版本，都是通过HttpClient跟后端API交互；所有的Http请求方法，比如get，post，put，delete都是返回一个Observable。在文章【[RxJS：Cold vs Hot Observables](https://limeii.github.io/2019/07/rxjs-coldhot-observable/)】里详细介绍了Cold Observables与Hot Observables的区别。

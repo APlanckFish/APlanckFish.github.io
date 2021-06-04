@@ -1,7 +1,8 @@
 ---
 title: RxJS入门和概览
 tags: RxJS
-layout: post
+date: 2020-5-26 14:16:35
+# layout: post
 ---
 
 RxJS是```Reactive Extensions For JavaScript```的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。
@@ -33,7 +34,7 @@ RxJS提供了各种API来创建数据流：
 - forkJoin，预设条件为所有数据流都完成
 - zip，取各来源数据流最后一个值合并为对象
 - combineLatest，取各来源数据流最后一个值合并为数组
-
+<!--more-->
 ## 异步事件流
 
 ![rxjs-data-stream](https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png){:height="70%" width="70%"}

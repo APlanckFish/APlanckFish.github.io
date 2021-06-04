@@ -60,6 +60,25 @@ time_format: HH:mm:ss
 per_page: 5
 pagination_dir: page
 
+# Archives
+## 2: Enable pagination
+## 1: Disable pagination
+## 0: Fully Disable
+archive: 2
+category: 2
+tag: 2
+
+# index_generator: # 首页文章列表页面
+#   path: ''
+#   per_page: 5 # 首頁显示多少篇文章，默认为10，如果值为0则不分页。由于首页会显示文章的摘要内容，建议不要取太大的数值，造成翻页定位困难
+#   order_by: -date # 排序，默认时间逆序，即最新的在最上面
+
+archive_generator:
+  enabled: true
+  per_page: 5  #值为0表示不分页，按需填写
+  yearly: true  #是否按年生成归档
+  monthly: false  #为了加快生成速度，按月归档就不要了
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/

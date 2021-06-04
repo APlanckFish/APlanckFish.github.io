@@ -1,7 +1,8 @@
 ---
 title: RxJS：Cold vs Hot Observables
 tags: RxJS
-layout: post
+date: 2020-5-26 14:16:35
+# layout: post
 ---
 
 RxJS中Observables分为两种：Cold Observables和Hot Observables，这两个到底有什么区别呢？我们先来看下[RxJS官方](https://github.com/Reactive-Extensions/RxJS/blob/master/doc/gettingstarted/creating.md#cold-vs-hot-observables)给出的解释：
@@ -17,7 +18,7 @@ Cold observables start running upon subscription, i.e., the observable sequence 
 - Hot Observables不管有没有被订阅都会产生值。是多播的，多个订阅共享同一个实例，是从订阅开始接受到值，每个订阅接收到的值是不同的，取决于它们是从什么时候开始订阅。
 
 单看文字解释，还是不太能理解，那自己先动手写几个Observables看看。具体代码在这里：[angular-rxjs](https://github.com/LiMeii/angular-rxjs/tree/master/src/app/modules/rxjs-cold-hot)
-
+<!--more-->
 ## Cold Observables
 
 ```ts

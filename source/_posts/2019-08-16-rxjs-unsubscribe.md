@@ -1,7 +1,8 @@
 ---
 title: RxJS：所有订阅都需要调用unsubscribe取消订阅？
 tags: RxJS
-layout: post
+date: 2020-5-26 14:16:35
+# layout: post
 ---
 
 最开始用RxJS的时候，看官方文档对Subscription的介绍如下：
@@ -25,7 +26,7 @@ What is a Subscription? A Subscription is an object that represents a disposable
 
 **那么显然在代码中，并不是所有的Observable都需要手动调用unsubscribe()取消订阅。**
 
-
+<!--more-->
 在Angular项目中，常用到的订阅以及是否需要调用unsubscribe()取消订阅，有以下几种：
 
 - Angular中通过HttpClient执行Http Request返回的Observables，订阅这些Observables拿到API返回的数据，不需要调用unsubscribe()取消订阅。
