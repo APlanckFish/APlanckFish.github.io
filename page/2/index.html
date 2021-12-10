@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  
+  <meta name="description" content="Miracle">
+  
+
+  
+  
+  
+  
+  
+  
+  <title>一条普朗克长度的鱼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Miracle">
+<meta property="og:type" content="website">
+<meta property="og:title" content="一条普朗克长度的鱼">
+<meta property="og:url" content="/page/2/index.html">
+<meta property="og:site_name" content="一条普朗克长度的鱼">
+<meta property="og:description" content="Miracle">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="一条普朗克长度的鱼">
+<meta name="twitter:description" content="Miracle">
+  
+  
+    <link rel="icon" href="/css/images/favicon.ico">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+  <!-- <link rel="stylesheet" href="/css/prettify.css"> -->
+  <link rel="stylesheet" href="/css/sons-of-obsidian.css">
+  <!-- <link rel="stylesheet" href="/css/desert.css"> -->
+  <!-- <link rel="stylesheet" href="/css/doxy.css"> -->
+  <!-- <link rel="stylesheet" href="/css/sunburst.css"> -->
+
+  <!-- baidu webmaster push -->
+  <script src="//push.zhanzhang.baidu.com/push.js"></script>
+  <script type="text/javascript" src="/js/prettify.js"></script>
+  <script src="/js/jquery-3.3.1.min.js"></script>
+  <!-- <link rel="style" href="/css/prettify.css"> -->
+  <script type="text/javascript">
+  $(window).on('load', function(){ 
+    $('pre').addClass('prettyprint linenums');
+    $('code').addClass('prettyprint');
+    prettyPrint();
+  });
+  </script>
+
+  <!-- <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
+
+</head></html>
+<body class="home blog custom-background custom-font-enabled single-author">
+  <div id="page" class="hfeed site">
+      <header id="masthead" class="site-header" role="banner">
+    <hgroup>
+      <h1 class="site-title">
+        <a href="/" title="一条普朗克长度的鱼" rel="home">一条普朗克长度的鱼</a>
+      </h1>
+      
+        <h2 class="site-description">
+          <!-- <a href="/" id="subtitle" class="helloTitle">若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。</a> -->
+          <a href="/" id="subtitle" class="helloTitle">loading...</a>
+        </h2>
+      
+    </hgroup>
+
+    <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle">菜单</button>
+            <a class="assistive-text" href="/#content" title="跳至内容">跳至内容</a><!--TODO-->
+            <div class="menu-main-container">
+                <ul id="menu-main" class="nav-menu">
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/">Home</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/archives">Archives</a></li>
+                
+                    <li class="menu-item menu-item-type-post_type menu-item-object-page"><a href="/about">About</a></li>
+                
+                </ul>
+            </div>
+    </nav>
+</header>
+
+<script>
+  function GetRandomNum(Min,Max)
+   {
+     var Range = Max - Min;
+     var Rand = Math.random();
+     return(Min + Math.round(Rand * Range));
+   }
+ function setSidebarMarginTop (headerOffset) {
+     return $('#sidebar').css({ 'margin-top': headerOffset });
+   }
+  function getHeaderOffset () {
+     return $('.header-inner').height();
+   }
+   window.onload=function(){
+     var subtitle = "若教眼底无离恨，不信人间有白头。W十年一觉扬州梦，赢得青楼薄幸名。W诗万卷，酒千觞，几曾着眼看侯王？W我亦飘零久。十年来，深恩负尽，死生师友。W从别后，忆相逢，几回魂梦与君同。W落花人独立，微雨燕双飞。";
+      var mytitle = subtitle.split("W");
+      var max = mytitle.length-1;
+      var index = GetRandomNum(0,max);
+      var text = mytitle[index];
+      $(".helloTitle").html(text);
+      var headOffset = getHeaderOffset();
+      setSidebarMarginTop(headOffset);
+    // alert(getHeaderOffset());
+   }
+ </script>
+
+      <div id="main" class="wrapper">
+        <div id="primary" class="site-content"><div id="content" role="main">
+  
+    <article id="post-2019-08-12-rxjs-caching" class="post-2019-08-12-rxjs-caching post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2020/05/26/2019-08-12-rxjs-caching/">RxJS：如何通过RxJS实现缓存</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-12-rxjs-caching/" data-id="ckx0i6j0w0005rqs9wvcknbxl" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>在这篇文章中会介绍以下内容：</p>
+<ul>
+<li><p>Angular中通过HttpClient执行Http Request返回的Observables是Cold Observable。</p>
+</li>
+<li><p>HttpClient Observable每次被订阅都需要调用http request，对于公用的API返回同样的值，在不同页面重复调用会浪费http资源降低性能。</p>
+</li>
+<li><p>如何通过ReplaySubject实现缓存效果，提高性能。</p>
+</li>
+</ul>
+        
+          <p class="article-more-link">
+            <a href="/2020/05/26/2019-08-12-rxjs-caching/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/05/26/2019-08-12-rxjs-caching/">
+    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
+        2020-05-26
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+    <article id="post-2019-08-16-rxjs-unsubscribe" class="post-2019-08-16-rxjs-unsubscribe post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2020/05/26/2019-08-16-rxjs-unsubscribe/">RxJS：所有订阅都需要调用unsubscribe取消订阅？</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-16-rxjs-unsubscribe/" data-id="ckx0i6j12000crqs9nq7ko1e8" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>最开始用RxJS的时候，看官方文档对Subscription的介绍如下：</p>
+<blockquote><br><p><br>What is a Subscription? A Subscription is an object that represents a disposable resource, usually the execution of an Observable. A Subscription has one important method,unsubscribe, that takes no argument and just disposes the resource held by the subscription<br></p><br></blockquote>
+
+<p>从此用RxJS订阅的时候，时刻都不忘调用unsubscribe()以防内存泄漏。对于结束Observable，释放内存的方式有三种方式：</p>
+<ul>
+<li><p>第一种，Observable完成值的发送，执行Observable.onComplete()</p>
+</li>
+<li><p>第二种，Observable发生错误，执行Observable.OnError()</p>
+</li>
+<li><p>第三种，订阅者主动取消订阅，执行subscription.unsubscribe()</p>
+</li>
+</ul>
+<p>对于<code>Observable.onComplete()</code>和<code>Observable.OnError()</code>，RxJS自身会处理这两种情况，所以不需要在代码里再手动取消订阅释放内存。对于第三种方式，Observable还在源源不断的发送值，订阅者想主动取消订阅，那就需要在代码里调用<code>unsubscribe()</code>取消订阅释放内存。</p>
+<p><strong>那么显然在代码中，并不是所有的Observable都需要手动调用unsubscribe()取消订阅。</strong></p>
+        
+          <p class="article-more-link">
+            <a href="/2020/05/26/2019-08-16-rxjs-unsubscribe/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/05/26/2019-08-16-rxjs-unsubscribe/">
+    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
+        2020-05-26
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+    <article id="post-2019-08-15-rxjs-notification" class="post-2019-08-15-rxjs-notification post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2020/05/26/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-15-rxjs-notification/" data-id="ckx0i6j14000frqs9dnazffq5" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>在上一篇文章【<a href="https://limeii.github.io/2019/08/rxjs-caching/" target="_blank" rel="noopener">RxJS：如何通过RxJS实现缓存</a>】里介绍了如何在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，减少重复调用API从而提高性能，这种方法适用于每次返回的Response数据都不变的常量API。在实际开发过程中，还有一种API返回的值随着时间会有变化，这个时候就需要去更新RxJS缓存里的值，从用户体检的角度出发，先在页面显示一个消息通知用户数据有更新，让用户选择是否需要更新页面内容，而不是直接在每次缓存更新以后直接刷新页面数据。接下来就来介绍如何基于RxJS实现简单的消息通知机制。</p>
+<p><blockquote></blockquote></p>
+<p></p><p><br>这篇文章里用到的<font color="#0000FF">RxJS缓存</font>都是指在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，后续新的订阅者都可以直接从ReplaySubject拿API Response数据。<br></p><br><br>
+        
+          <p class="article-more-link">
+            <a href="/2020/05/26/2019-08-15-rxjs-notification/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/05/26/2019-08-15-rxjs-notification/">
+    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
+        2020-05-26
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+    <article id="post-test" class="post-test post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2019/07/07/test/">test_post</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="ckx0i6j16000hrqs9m7k40moo" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <pre><code class="javascript">let a = val =&gt;{
+    console.log(val)
+}
+</code></pre>
+
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2019/07/07/test/">
+    <time datetime="2019-07-07T06:16:35.000Z" class="entry-date">
+        2019-07-07
+    </time>
+</a>
+    
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/書情詩話/">書情詩話</a>
+  </div>
+
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/天净沙/">天净沙</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/格律词/">格律词</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+    <article id="post-与雪球网交互抓取股票数据" class="post-与雪球网交互抓取股票数据 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2017/11/14/与雪球网交互抓取股票数据/" data-id="ckx0i6j1b000rrqs90lnm19ky" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>这些天写了一个简单的与雪球网交互的小程序，功能是运行后可以获取实时的股票价格，还有股票的历史价格，并将历史价格绘制成走势图。<br>python在爬虫方面有urllib、requests、BeautifulSoup4等工具库。urllib可用于抓取静态页面的html文本，requests可用于向网页发送请求(get/post)并获取返回的响应，BeautifulSoup库可用于对html页面的解析。</p>
+<pre><code class="python">#设置matplotlib中文字体
+font = FontProperties(fname=r&quot;c:\\windows\\fonts\\simsun.ttc&quot;, size=14) 
+#伪装浏览器登录
+headers={
+    &quot;User-Agent&quot;:&quot;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36&quot;
+}
+#可以写一个url管理器来对url列表进行操作，此处先行指定几个
+url=[&quot;https://xueqiu.com/S/NVDA&quot;,&quot;https://xueqiu.com/S/AMD&quot;,&quot;https://xueqiu.com/S/TSLA&quot;,&quot;https://xueqiu.com/S/BABA&quot;,&quot;https://xueqiu.com/S/AAPL&quot;]
+#抓取现在股票价格
+def get_price(url):
+    response=urllib.request.Request(url,headers=headers)
+    html=urllib.request.urlopen(response).read().decode(&quot;utf-8&quot;)
+    soup=BeautifulSoup(html,&quot;html.parser&quot;)
+    name=soup.find(&quot;div&quot;,class_=&quot;stock-name&quot;).get_text()
+    price=soup.find(&quot;div&quot;,class_=&quot;stock-current&quot;).get_text()
+    print(name+&quot;现在的股价是:&quot;+price)
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/14/与雪球网交互抓取股票数据/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2017/11/14/与雪球网交互抓取股票数据/">
+    <time datetime="2017-11-14T11:59:32.000Z" class="entry-date">
+        2017-11-14
+    </time>
+</a>
+    
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
+  </div>
+
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据可视化/">数据可视化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据挖掘/">数据挖掘</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+  
+    <nav id="pagination">
+      <nav id="page-nav">
+        <a class="extend prev" rel="prev" href="/">&laquo; 上一页</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">下一页 &raquo;</a>
+      </nav>
+    </nav>
+  
+
+</div></div>
+        <div id="secondary" class="widget-area" role="complementary">
+  
+    <aside id="search" class="widget widget_search"><form role="search" method="get" accept-charset="utf-8" id="searchform" class="searchform" action="//google.com/search">
+    <div>
+        <input type="text" value="" name="s" id="s" />
+        <input type="submit" id="searchsubmit" value="搜索" />
+    </div>
+</form></aside>
+  
+    
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget-content">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Recents</h3>
+    <div class="widget-content">
+      <ul>
+        
+          <li>
+            <a href="/2021/05/26/parceljs2与webpack5对比文档/">parceljs2与webpack5性能对比</a>
+          </li>
+        
+          <li>
+            <a href="/2021/04/26/sz-past/">深圳三年</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/26/2019-07-05-rxjs-introduce/">RxJS入门和概览</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/26/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
+          </li>
+        
+          <li>
+            <a href="/2020/05/26/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
+          </li>
+        
+      </ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget-content">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文档/">技术文档</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </aside>
+
+  
+    
+  <aside class="widget">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget-content tagcloud">
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/技术文档/" style="font-size: 10px;">技术文档</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+    </div>
+  </aside>
+
+  
+</div>
+      </div>
+      <footer id="colophon" role="contentinfo">
+    <p>&copy; 2021 陈攀博
+    All rights reserved.</p>
+    <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</footer>
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/js/share.js'];</script>
+
+<script src="/js/jquery-3.3.1.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+<script src="/js/navigation.js"></script>
+
+<div id="bg"></div>
+
+  </div>
+</body>
+</html>
