@@ -13,22 +13,27 @@
   
   
   
-  <title>RxJS入门和概览 | 一条普朗克长度的鱼</title>
+  <title>雪山游记 | 一条普朗克长度的鱼</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
-<meta name="keywords" content="RxJS">
+  <meta name="description" content="我已经不记得是哪天第一次见到你了。应该是我毕业不久，可能是那天阳光正好，你穿了一件我喜欢的衣服，从此我的世界里便经常出现你的影子，偶尔是在眼前，偶尔是在梦里。我生性不善言辞，话语较少，对情绪不太敏感，你第一次答应我时，我有满心的喜悦，却不知如何表达出来。我真的不知如何去做，我也没有去想应该用什么样的姿态去面对你，就这样一切如常，直到你第一次彻底爆发。我当时措手不及，根本不知道去怎么应对，然而你还是">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RxJS入门和概览">
-<meta property="og:url" content="/2020/05/26/2019-07-05-rxjs-introduce/index.html">
+<meta property="og:title" content="雪山游记">
+<meta property="og:url" content="/2022/03/05/雪山游记/index.html">
 <meta property="og:site_name" content="一条普朗克长度的鱼">
-<meta property="og:description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
+<meta property="og:description" content="我已经不记得是哪天第一次见到你了。应该是我毕业不久，可能是那天阳光正好，你穿了一件我喜欢的衣服，从此我的世界里便经常出现你的影子，偶尔是在眼前，偶尔是在梦里。我生性不善言辞，话语较少，对情绪不太敏感，你第一次答应我时，我有满心的喜悦，却不知如何表达出来。我真的不知如何去做，我也没有去想应该用什么样的姿态去面对你，就这样一切如常，直到你第一次彻底爆发。我当时措手不及，根本不知道去怎么应对，然而你还是">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png">
-<meta property="og:updated_time" content="2021-12-10T14:37:41.252Z">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory1.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory2.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory5.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory6.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory7.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory3.jpeg">
+<meta property="og:image" content="/2022/03/05/images/love-story/loveStory4.jpeg">
+<meta property="og:updated_time" content="2022-03-05T03:31:55.278Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="RxJS入门和概览">
-<meta name="twitter:description" content="RxJS是Reactive Extensions For JavaScript的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。 什么是响应式编程（Reactive Programming）？任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任">
-<meta name="twitter:image" content="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png">
+<meta name="twitter:title" content="雪山游记">
+<meta name="twitter:description" content="我已经不记得是哪天第一次见到你了。应该是我毕业不久，可能是那天阳光正好，你穿了一件我喜欢的衣服，从此我的世界里便经常出现你的影子，偶尔是在眼前，偶尔是在梦里。我生性不善言辞，话语较少，对情绪不太敏感，你第一次答应我时，我有满心的喜悦，却不知如何表达出来。我真的不知如何去做，我也没有去想应该用什么样的姿态去面对你，就这样一切如常，直到你第一次彻底爆发。我当时措手不及，根本不知道去怎么应对，然而你还是">
+<meta name="twitter:image" content="/2022/03/05/images/love-story/loveStory1.jpeg">
   
   
     <link rel="icon" href="/css/images/favicon.ico">
@@ -117,7 +122,7 @@
  </script>
 
       <div id="main" class="wrapper">
-        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-2019-07-05-rxjs-introduce" class="post-2019-07-05-rxjs-introduce post type-post status-publish format-standard hentry">
+        <div id="primary" class="site-content"><div id="content" role="main"><article id="post-雪山游记" class="post-雪山游记 post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -125,139 +130,37 @@
         
   
     <h1 class="entry-title article-title">
-      RxJS入门和概览
+      雪山游记
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2020/05/26/2019-07-05-rxjs-introduce/" data-id="ckx0i6j0m0000rqs9js7jjjyc" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+            <a href="javascript:void(0);" data-url="/2022/03/05/雪山游记/" data-id="cl0d927yh0000n0s9164ristm" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>RxJS是<code>Reactive Extensions For JavaScript</code>的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。</p>
-<h2 id="什么是响应式编程（Reactive-Programming）？"><a href="#什么是响应式编程（Reactive-Programming）？" class="headerlink" title="什么是响应式编程（Reactive Programming）？"></a>什么是响应式编程（Reactive Programming）？</h2><p>任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任何变量、用户输入、属性、缓存、数据结构等，响应式编程把所有事物都看成是数据流。数据流是类似数组一样的序列，可以像数组一样，用merge、map、concat等方法操作。简单来说就是：把所有事物都事件流化，然后把这些事件流像数组一样去操作，就是响应式编程。</p>
-<p>RxJS提供了各种API来创建数据流：</p>
-<ul>
-<li>单值：of, empty, never</li>
-<li>多值：from</li>
-<li>定时：interval, timer</li>
-<li>从事件创建：fromEvent</li>
-<li>从Promise创建：fromPromise</li>
-<li>自定义创建：create</li>
-</ul>
-<p>创建出来的数据流，是一种类似数组一样的序列，可以被订阅，也可以用如下API操作控制：</p>
-<ul>
-<li>改变数据形态：map, mapTo, pluck</li>
-<li>过滤一些值：filter, skip, first, last, take</li>
-<li>时间轴上的操作：delay, timeout, throttle, debounce, audit, bufferTime</li>
-<li>累加：reduce, scan</li>
-<li>异常处理：throw, catch, retry, finally</li>
-<li>条件执行：takeUntil, delayWhen, retryWhen, subscribeOn, ObserveOn</li>
-<li>转接：switch</li>
-<li>concat，保持原来的序列顺序连接两个数据流</li>
-<li>merge，合并序列</li>
-<li>race，预设条件为其中一个数据流完成</li>
-<li>forkJoin，预设条件为所有数据流都完成</li>
-<li>zip，取各来源数据流最后一个值合并为对象</li>
-<li>combineLatest，取各来源数据流最后一个值合并为数组<a id="more"></a>
-<h2 id="异步事件流"><a href="#异步事件流" class="headerlink" title="异步事件流"></a>异步事件流</h2></li>
-</ul>
-<p><img src="https://limeii.github.io/assets/images/posts/rxjs/rxjs-stream.png" alt="rxjs-data-stream">{:height=”70%” width=”70%”}</p>
-<p>在上图中有如下几种东西：</p>
-<ul>
-<li>click事件流</li>
-<li>事件流产生的值</li>
-<li>错误</li>
-<li>事件流结束</li>
-<li>时间轴</li>
-</ul>
-<p>点击一个按钮事件，随着时间推移，这个点击事件会产生三个不同的结果：值，发生错误，事件完成。我们可以定义方法用来：捕获值，捕获错误，捕获点击事件结束。在这个过程中，涉及到以下几个RxJS的基本概念：</p>
-<blockquote><br><p><br><strong>Observable(可观察对象)</strong>：就是点击事件流。<br></p><br><br><p><br><strong>Observers(观察者)</strong>：就是捕获值/错误/事件结束的方法（其实就是回调函数集合)。<br></p><br><br><p><br><strong>Subscription(订阅)</strong>：Observable产生的值都需要通过一个‘监听’把值传给Observers，这个‘监听’就是Subscription。<br></p><br><br><p><br> <strong>生产者 (Producer)</strong>：就是点击事件，是事件的生产者。<br></p><br></blockquote>
-
-<p>我们也可以用ASCII来描述这个事件流：</p>
-<pre><code>--a---b-c---d---X---|-&gt;
-
-a b c d 是产生的值
-X 是错误
-| 是事件结束标志
----&gt; 是时间线
-
-</code></pre><h2 id="为什么要有响应式编程？"><a href="#为什么要有响应式编程？" class="headerlink" title="为什么要有响应式编程？"></a>为什么要有响应式编程？</h2><p>我们先来看一个实际的例子：页面上有一个按钮，现在需要统计按钮点击次数。</p>
-<p>在没有RxJS，代码可以写成这样：</p>
-<pre><code class="js">var counter = 0;
-
-document.getElementById(&quot;myBtn&quot;).addEventListener(&quot;click&quot;, function () {
-    counter = counter + 1;
-});
-
-</code></pre>
-<p>用RxJS，代码如下：</p>
-<pre><code class="js">let button = document.getElementById(&quot;myBtn&quot;);
-
-let clickStream$ = fromEvent(button, &quot;click&quot;);
-
-let counterStream$ = clickStream$.pipe(
-    map((data) =&gt; { return 1 }),
-    scan((acc, curr) =&gt; acc + curr, 0)
-);
-
-counterStream$.subscribe(data =&gt; {
-    console.log(&quot;this is the click counter: &quot; + data);
-});
-</code></pre>
-<p>整个事件流可以用ASCII描述如下：</p>
-<pre><code> clickStream: ---c----c--c----c------c--&gt;
-                   map(c becomes 1) 
-               ---1----1--1----1------1--&gt;
-                   scan(+) 
-counterStream: ---1----2--3----4------5--&gt;
-</code></pre><p>点击事件可以看成是数据流（clickStream），在clickStream事件流基础上用方法<code>map</code>把每次点击事件转化成1，然后用 <code>scan</code>把所有的点击次数加起来，当我们执行map或者scan的时候都会在原来的数据流基础上生产一个新的数据流，原来的数据流不变。</p>
-<p>从上面的这个例子还不能看出RxJS的强大和优势，我们现在再来看下：统计出双击事件次数，或者多次点击（两次或两次以上）都统计为双击次数。如果要用传统的代码实现这个需求，肯定要有很多变量来声明各种状态而且还要用到intervals，代码逻辑复杂且容易出错。但是在响应式编程里十分简单，实际只需要四行代码！</p>
-<p>我们先用ASCII把流程画一下：</p>
-<pre><code>   clickStream: ----c----c-c---c-cc---ccc---c----|-&gt;
-                buff(clickStream.throttleTime(250ms))
-                ----c----cc-----ccc---ccc---c----|-&gt;
-                    map(&#39;get length of lists&#39;)
-                ----1-----2------3-----3----1----|-&gt;
-                    filter(x&gt;=2)                  
-mulClickStream: ----------2------3-----3---------|-&gt;
-
-</code></pre><p>具体代码如下：</p>
-<pre><code class="ts">let button = document.getElementById(&quot;myBtn&quot;);
-
-let clickStream$ = fromEvent(button, &quot;click&quot;);
-
-let doubleClickStream$ = clickStream$
-    .pipe(
-        buffer(clickStream$.pipe(throttleTime(250))),
-        map(click =&gt; { return click.length }),
-        filter(num =&gt; num &gt;= 2)
-    )
-
-doubleClickStream$.subscribe(data =&gt; {
-    console.log(&quot;the number of double click is: &quot; + data);;
-});
-</code></pre>
-<p>从上面这个简单的例子，我们可以看到RxJS提供大量的操作符，处理不同的业务需求，短短几行代码可以涵盖很复杂的代码逻辑，在前端交互非常复杂的系统中，客户端都是基于事件编程的，对事件处理非常多，用RxJS比较有优势。当然响应式编程不仅仅是在JS里存在，它还支持各种语言，比如：RxJava、Rx.NET、RxPY、RxGo等等。</p>
+        <p>我已经不记得是哪天第一次见到你了。应该是我毕业不久，可能是那天阳光正好，你穿了一件我喜欢的衣服，从此我的世界里便经常出现你的影子，偶尔是在眼前，偶尔是在梦里。<br>我生性不善言辞，话语较少，对情绪不太敏感，你第一次答应我时，我有满心的喜悦，却不知如何表达出来。我真的不知如何去做，我也没有去想应该用什么样的姿态去面对你，就这样一切如常，直到你第一次彻底爆发。我当时措手不及，根本不知道去怎么应对，然而你还是原谅了我，我以为当时是我做对了什么。现在想来只是你还在照顾我的情绪罢了。<br>我们的感情熬过了寒冷的冬季，却没有挺过这个温暖的春天。<br><a id="more"></a><br>我以前一直想看看外面的世界，我觉得世界很大，人很渺小。我想去北京上海深圳，挣好多好多的钱，我就可以做我想做的事情，我经常在想，如果我财富自由了，我就会带着我女朋友去环游地球，从江南走到西藏，从贝加尔湖走到欧洲，看看祖国的大好河山，看看人类文明的波澜壮阔。人生百年相比宇宙如沧海一粟，我想在有生之年带你探索这个星球，吃遍全世界的美味。<br>因此我很期待这次旅行，我以为雪山只是开始，没有想到却是结局。我不是那种规划性很强的人，比较随性，出去玩也是这样，想睡懒觉就睡个懒觉，想改变行程就随时调整，但是我真的没有注意到你的情绪变化。我们登到雪山山顶，4570，那里真的很美，也很冷，但是我第一次感觉到内心无比的火热。<br><img src="../images/love-story/loveStory1.jpeg" alt="love-story"><br>雪山很美，但不及你万分之一。<br><img src="../images/love-story/loveStory2.jpeg" alt="love-story"><br>我们又去了文青最爱的大理。去了苍山洱海，去了大理古城，找到了一家好听的酒吧，听她静静地唱着那些熟悉的民谣。我记得酒很烈，歌很好听，夜晚很美，我们红着脸搀扶着彼此一起慢慢的往回走。我想这样走一辈子，我也以为可以这样。我从没想到故事到这里就戛然而止。<br><img src="../images/love-story/loveStory5.jpeg" alt="love-story"><br><img src="../images/love-story/loveStory6.jpeg" alt="love-story"><br><img src="../images/love-story/loveStory7.jpeg" alt="love-story"><br>我在你最需要我的时候没有出现，而你仿佛也发现了你其实并不需要我。<br>现在这些事情好像突然对我失去了意义，更好的工作、长途的旅程，突然就没有了任何的吸引力。我突然意识到你才是我的全世界里最重要的事情。<br><img src="../images/love-story/loveStory3.jpeg" alt="love-story"><br><img src="../images/love-story/loveStory4.jpeg" alt="love-story"><br>如果可以，我想回到3个月前，我一定天天围着你转。我想你。</p>
 
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2020/05/26/2019-07-05-rxjs-introduce/">
-    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
-        2020-05-26
+    <a href="/2022/03/05/雪山游记/">
+    <time datetime="2022-03-05T06:16:35.000Z" class="entry-date">
+        2022-03-05
     </time>
 </a>
     
-    
   <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/随笔/">随笔</a>
+  </div>
 
+    
     </footer>
 </article>
 
@@ -266,10 +169,8 @@ doubleClickStream$.subscribe(data =&gt; {
 <nav class="nav-single">
     <h3 class="assistive-text">文章导航</h3>
     
-        <span class="nav-previous"><a href="/2021/04/26/sz-past/" rel="prev"><span class="meta-nav">←</span> 深圳三年</a></span>
     
-    
-        <span class="nav-next"><a href="/2020/05/26/2019-07-12-rxjs-coldhot-observable/" rel="next">RxJS：Cold vs Hot Observables <span class="meta-nav">→</span></a></span>
+        <span class="nav-next"><a href="/2021/05/26/parceljs2与webpack5对比文档/" rel="next">parceljs2与webpack5性能对比 <span class="meta-nav">→</span></a></span>
     
 </nav><!-- .nav-single -->
 

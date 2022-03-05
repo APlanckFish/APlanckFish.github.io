@@ -115,6 +115,82 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
+    <article id="post-与雪球网交互抓取股票数据" class="post-与雪球网交互抓取股票数据 post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2017/11/14/与雪球网交互抓取股票数据/">与雪球网交互抓取股票数据</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2017/11/14/与雪球网交互抓取股票数据/" data-id="ckx0i6j1b000rrqs90lnm19ky" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>这些天写了一个简单的与雪球网交互的小程序，功能是运行后可以获取实时的股票价格，还有股票的历史价格，并将历史价格绘制成走势图。<br>python在爬虫方面有urllib、requests、BeautifulSoup4等工具库。urllib可用于抓取静态页面的html文本，requests可用于向网页发送请求(get/post)并获取返回的响应，BeautifulSoup库可用于对html页面的解析。</p>
+<pre><code class="python">#设置matplotlib中文字体
+font = FontProperties(fname=r&quot;c:\\windows\\fonts\\simsun.ttc&quot;, size=14) 
+#伪装浏览器登录
+headers={
+    &quot;User-Agent&quot;:&quot;Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36&quot;
+}
+#可以写一个url管理器来对url列表进行操作，此处先行指定几个
+url=[&quot;https://xueqiu.com/S/NVDA&quot;,&quot;https://xueqiu.com/S/AMD&quot;,&quot;https://xueqiu.com/S/TSLA&quot;,&quot;https://xueqiu.com/S/BABA&quot;,&quot;https://xueqiu.com/S/AAPL&quot;]
+#抓取现在股票价格
+def get_price(url):
+    response=urllib.request.Request(url,headers=headers)
+    html=urllib.request.urlopen(response).read().decode(&quot;utf-8&quot;)
+    soup=BeautifulSoup(html,&quot;html.parser&quot;)
+    name=soup.find(&quot;div&quot;,class_=&quot;stock-name&quot;).get_text()
+    price=soup.find(&quot;div&quot;,class_=&quot;stock-current&quot;).get_text()
+    print(name+&quot;现在的股价是:&quot;+price)
+</code></pre>
+        
+          <p class="article-more-link">
+            <a href="/2017/11/14/与雪球网交互抓取股票数据/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2017/11/14/与雪球网交互抓取股票数据/">
+    <time datetime="2017-11-14T11:59:32.000Z" class="entry-date">
+        2017-11-14
+    </time>
+</a>
+    
+  <span class="article-delim">&#8226;</span>
+  <div class="article-category">
+  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
+  </div>
+
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据可视化/">数据可视化</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数据挖掘/">数据挖掘</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/爬虫/">爬虫</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
     <article id="post-一个小型微信自动回复机器人" class="post-一个小型微信自动回复机器人 post type-post status-publish format-standard hentry">
     <!---->
 
@@ -345,68 +421,10 @@
 
 
   
-    <article id="post-first-post-0" class="post-first-post-0 post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2016/11/23/first-post-0/">Hello world</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="/2016/11/23/first-post-0/" data-id="ckx0i6j0x0006rqs9inksvlbq" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>在经历诸多困难后，陈攀博的个人主页终于上线了。</p>
-<pre><code class="python">print (Hello world!)
-</code></pre>
-<p>望周知。<br>感谢<a href="https://yang-chenhao.github.io/" target="_blank" rel="noopener">杨晨昊</a>对本网站搭建的指导。</p>
-
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2016/11/23/first-post-0/">
-    <time datetime="2016-11-23T04:13:05.000Z" class="entry-date">
-        2016-11-23
-    </time>
-</a>
-    
-  <span class="article-delim">&#8226;</span>
-  <div class="article-category">
-  <a class="article-category-link" href="/categories/开发心得/">开发心得</a>
-  </div>
-
-    
-  <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/随笔/">随笔</a></li></ul>
-
-    </footer>
-</article>
-
-
-
-
-<!-- {% set owner = theme.gitment.githubID %}
-{% set repo = theme.gitment.repo %}
-{% set cid = theme.gitment.ClientID %}
-{% set cs = theme.gitment.ClientSecret %} -->
-
-
-  
   
     <nav id="pagination">
       <nav id="page-nav">
-        <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+        <a class="extend prev" rel="prev" href="/page/2/">&laquo; 上一页</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/4/">下一页 &raquo;</a>
       </nav>
     </nav>
   
@@ -427,7 +445,7 @@
   <aside class="widget">
     <h3 class="widget-title">Categories</h3>
     <div class="widget-content">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">2</span></li></ul>
     </div>
   </aside>
 
@@ -437,6 +455,10 @@
     <h3 class="widget-title">Recents</h3>
     <div class="widget-content">
       <ul>
+        
+          <li>
+            <a href="/2022/03/05/雪山游记/">雪山游记</a>
+          </li>
         
           <li>
             <a href="/2021/05/26/parceljs2与webpack5对比文档/">parceljs2与webpack5性能对比</a>
@@ -452,10 +474,6 @@
         
           <li>
             <a href="/2020/05/26/2019-07-12-rxjs-coldhot-observable/">RxJS：Cold vs Hot Observables</a>
-          </li>
-        
-          <li>
-            <a href="/2020/05/26/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
           </li>
         
       </ul>
@@ -484,7 +502,7 @@
 </div>
       </div>
       <footer id="colophon" role="contentinfo">
-    <p>&copy; 2021 陈攀博
+    <p>&copy; 2022 陈攀博
     All rights reserved.</p>
     <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
 </footer>
