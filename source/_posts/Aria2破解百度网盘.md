@@ -1,6 +1,6 @@
 ---
-title: Aria2破解百度网盘
-date: 202-12-01 19:59:32
+title: aria2破解百度网盘
+date: 2022-12-01 18:31:37
 tags: [开发工具]
 categories: 开发工具
 ---
@@ -61,7 +61,7 @@ windows用户可寻找对应安装包
 
    ```aria2c```
 
-   ![image-20221201180440192](/Users/chenpanbo/program/APlanckFish.github.io/source/images/image-20221201180440192.png)
+   ![image-20221201180440192](/images/image-20221201180440192.png)
 
 出现以下字样则成功启动。
 
