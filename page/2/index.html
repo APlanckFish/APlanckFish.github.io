@@ -115,7 +115,7 @@
       <div id="main" class="wrapper">
         <div id="primary" class="site-content"><div id="content" role="main">
   
-    <article id="post-2019-07-05-rxjs-introduce" class="post-2019-07-05-rxjs-introduce post type-post status-publish format-standard hentry">
+    <article id="post-2019-07-25-rxjs-subject" class="post-2019-07-25-rxjs-subject post type-post status-publish format-standard hentry">
     <!---->
 
       <header class="entry-header">
@@ -123,55 +123,128 @@
         
   
     <h1 class="entry-title">
-      <a class="article-title" href="/2020/05/26/2019-07-05-rxjs-introduce/">RxJS入门和概览</a>
+      <a class="article-title" href="/2020/05/26/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
     </h1>
   
 
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2020/05/26/2019-07-05-rxjs-introduce/" data-id="cl3gsvx020004bds9lit22j9q" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-07-25-rxjs-subject/" data-id="clb4xa9he0003gzs9fiqrdnvw" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
     <div class="entry-content">
       
-        <p>RxJS是<code>Reactive Extensions For JavaScript</code>的简写，它是一个强大的JavaScript Reactive编程库。Reactive是指响应式编程（Reactive Programming）。</p>
-<h2 id="什么是响应式编程（Reactive-Programming）？"><a href="#什么是响应式编程（Reactive-Programming）？" class="headerlink" title="什么是响应式编程（Reactive Programming）？"></a>什么是响应式编程（Reactive Programming）？</h2><p>任何异步事件（比如页面鼠标click事件），在响应式编程都是异步事件流。不仅仅是click、hover这种事件，任何变量、用户输入、属性、缓存、数据结构等，响应式编程把所有事物都看成是数据流。数据流是类似数组一样的序列，可以像数组一样，用merge、map、concat等方法操作。简单来说就是：把所有事物都事件流化，然后把这些事件流像数组一样去操作，就是响应式编程。</p>
-<p>RxJS提供了各种API来创建数据流：</p>
-<ul>
-<li>单值：of, empty, never</li>
-<li>多值：from</li>
-<li>定时：interval, timer</li>
-<li>从事件创建：fromEvent</li>
-<li>从Promise创建：fromPromise</li>
-<li>自定义创建：create</li>
-</ul>
-<p>创建出来的数据流，是一种类似数组一样的序列，可以被订阅，也可以用如下API操作控制：</p>
-<ul>
-<li>改变数据形态：map, mapTo, pluck</li>
-<li>过滤一些值：filter, skip, first, last, take</li>
-<li>时间轴上的操作：delay, timeout, throttle, debounce, audit, bufferTime</li>
-<li>累加：reduce, scan</li>
-<li>异常处理：throw, catch, retry, finally</li>
-<li>条件执行：takeUntil, delayWhen, retryWhen, subscribeOn, ObserveOn</li>
-<li>转接：switch</li>
-<li>concat，保持原来的序列顺序连接两个数据流</li>
-<li>merge，合并序列</li>
-<li>race，预设条件为其中一个数据流完成</li>
-<li>forkJoin，预设条件为所有数据流都完成</li>
-<li>zip，取各来源数据流最后一个值合并为对象</li>
-<li>combineLatest，取各来源数据流最后一个值合并为数组</li></ul>
+        <p>在RxJS中有四种Subject分别是：Subject，BehaviorSubject，AsyncSubject，ReplaySubject；这四种Subject都是特殊的Observable。</p>
+<p>在介绍它们之前，我们先来看下这四种Subject与普通Observable的区别：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Observable</th>
+<th style="text-align:center">Subject</th>
+<th style="text-align:center">BehaviorSubject</th>
+<th style="text-align:center">AsyncSubject</th>
+<th style="text-align:center">ReplaySubject</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Cold</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+<td style="text-align:center">Hot</td>
+</tr>
+<tr>
+<td style="text-align:center">数据生成者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+<td style="text-align:center">数据生成者和消费者</td>
+</tr>
+<tr>
+<td style="text-align:center">单播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+<td style="text-align:center">多播</td>
+</tr>
+<tr>
+<td style="text-align:center">每次从头开始把值发给观察者</td>
+<td style="text-align:center">将值多播给已注册监听该 Subject 的观察者们</td>
+<td style="text-align:center">把最后一个值（当前值）发送给观察者（需要初始值）</td>
+<td style="text-align:center">执行的最后一个值发送给观察者相当于last()</td>
+<td style="text-align:center">可以把之前的值发送给观察者（错过的值）</td>
+</tr>
+</tbody>
+</table>
         
           <p class="article-more-link">
-            <a href="/2020/05/26/2019-07-05-rxjs-introduce/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+            <a href="/2020/05/26/2019-07-25-rxjs-subject/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
           </p>
         
       
     </div><!-- .entry-content -->
 
     <footer class="entry-meta">
-    <a href="/2020/05/26/2019-07-05-rxjs-introduce/">
+    <a href="/2020/05/26/2019-07-25-rxjs-subject/">
+    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
+        2020-05-26
+    </time>
+</a>
+    
+    
+  <span class="article-delim">&#8226;</span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
+
+    </footer>
+</article>
+
+
+
+
+<!-- {% set owner = theme.gitment.githubID %}
+{% set repo = theme.gitment.repo %}
+{% set cid = theme.gitment.ClientID %}
+{% set cs = theme.gitment.ClientSecret %} -->
+
+
+  
+    <article id="post-2019-08-15-rxjs-notification" class="post-2019-08-15-rxjs-notification post type-post status-publish format-standard hentry">
+    <!---->
+
+      <header class="entry-header">
+        
+        
+  
+    <h1 class="entry-title">
+      <a class="article-title" href="/2020/05/26/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
+    </h1>
+  
+
+        
+        <div class="comments-link">
+            
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-15-rxjs-notification/" data-id="clb4xa9hg0004gzs9y0jercgq" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+        </div><!-- .comments-link -->
+      </header><!-- .entry-header -->
+
+    <div class="entry-content">
+      
+        <p>在上一篇文章【<a href="https://limeii.github.io/2019/08/rxjs-caching/" target="_blank" rel="noopener">RxJS：如何通过RxJS实现缓存</a>】里介绍了如何在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，减少重复调用API从而提高性能，这种方法适用于每次返回的Response数据都不变的常量API。在实际开发过程中，还有一种API返回的值随着时间会有变化，这个时候就需要去更新RxJS缓存里的值，从用户体检的角度出发，先在页面显示一个消息通知用户数据有更新，让用户选择是否需要更新页面内容，而不是直接在每次缓存更新以后直接刷新页面数据。接下来就来介绍如何基于RxJS实现简单的消息通知机制。</p>
+<p><blockquote></blockquote></p>
+<p></p><p><br>这篇文章里用到的<font color="#0000FF">RxJS缓存</font>都是指在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，后续新的订阅者都可以直接从ReplaySubject拿API Response数据。<br></p><br><br>
+        
+          <p class="article-more-link">
+            <a href="/2020/05/26/2019-08-15-rxjs-notification/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
+          </p>
+        
+      
+    </div><!-- .entry-content -->
+
+    <footer class="entry-meta">
+    <a href="/2020/05/26/2019-08-15-rxjs-notification/">
     <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
         2020-05-26
     </time>
@@ -209,7 +282,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-12-rxjs-caching/" data-id="cl3gsvx030005bds94s7bslix" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-12-rxjs-caching/" data-id="clb4xa9hh0005gzs9gnyzdpg9" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -271,7 +344,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-16-rxjs-unsubscribe/" data-id="cl3gsvx070009bds9s8s6ptux" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-16-rxjs-unsubscribe/" data-id="clb4xa9hq000ggzs9hqqfb2oy" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -323,62 +396,6 @@
 
 
   
-    <article id="post-2019-08-15-rxjs-notification" class="post-2019-08-15-rxjs-notification post type-post status-publish format-standard hentry">
-    <!---->
-
-      <header class="entry-header">
-        
-        
-  
-    <h1 class="entry-title">
-      <a class="article-title" href="/2020/05/26/2019-08-15-rxjs-notification/">RxJS：如何通过RxJS实现简单的消息通知机制</a>
-    </h1>
-  
-
-        
-        <div class="comments-link">
-            
-            <a href="javascript:void(0);" data-url="/2020/05/26/2019-08-15-rxjs-notification/" data-id="cl3gsvx09000cbds96y93co4i" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
-        </div><!-- .comments-link -->
-      </header><!-- .entry-header -->
-
-    <div class="entry-content">
-      
-        <p>在上一篇文章【<a href="https://limeii.github.io/2019/08/rxjs-caching/" target="_blank" rel="noopener">RxJS：如何通过RxJS实现缓存</a>】里介绍了如何在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，减少重复调用API从而提高性能，这种方法适用于每次返回的Response数据都不变的常量API。在实际开发过程中，还有一种API返回的值随着时间会有变化，这个时候就需要去更新RxJS缓存里的值，从用户体检的角度出发，先在页面显示一个消息通知用户数据有更新，让用户选择是否需要更新页面内容，而不是直接在每次缓存更新以后直接刷新页面数据。接下来就来介绍如何基于RxJS实现简单的消息通知机制。</p>
-<p><blockquote></blockquote></p>
-<p></p><p><br>这篇文章里用到的<font color="#0000FF">RxJS缓存</font>都是指在Anuglar2+中结合HttpClient和ReplaySubject缓存API Response数据，后续新的订阅者都可以直接从ReplaySubject拿API Response数据。<br></p><br><br>
-        
-          <p class="article-more-link">
-            <a href="/2020/05/26/2019-08-15-rxjs-notification/#more" class="more-link">查看更多 <span class="meta-nav">→</span></a>
-          </p>
-        
-      
-    </div><!-- .entry-content -->
-
-    <footer class="entry-meta">
-    <a href="/2020/05/26/2019-08-15-rxjs-notification/">
-    <time datetime="2020-05-26T06:16:35.000Z" class="entry-date">
-        2020-05-26
-    </time>
-</a>
-    
-    
-  <span class="article-delim">&#8226;</span>
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RxJS/">RxJS</a></li></ul>
-
-    </footer>
-</article>
-
-
-
-
-<!-- {% set owner = theme.gitment.githubID %}
-{% set repo = theme.gitment.repo %}
-{% set cid = theme.gitment.ClientID %}
-{% set cs = theme.gitment.ClientSecret %} -->
-
-
-  
     <article id="post-test" class="post-test post type-post status-publish format-standard hentry">
     <!---->
 
@@ -394,7 +411,7 @@
         
         <div class="comments-link">
             
-            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="cl3gsvx0e000lbds9jiihuzrr" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
+            <a href="javascript:void(0);" data-url="/2019/07/07/test/" data-id="clb4xa9hy000ugzs98n3t5cep" class="leave-reply bdsharebuttonbox" data-cmd="more">分享</a>
         </div><!-- .comments-link -->
       </header><!-- .entry-header -->
 
@@ -461,7 +478,7 @@
   <aside class="widget">
     <h3 class="widget-title">Categories</h3>
     <div class="widget-content">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/女朋友教程/">女朋友教程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/女朋友教程/">女朋友教程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发工具/">开发工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/开发心得/">开发心得</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/書情詩話/">書情詩話</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/随笔/">随笔</a><span class="category-list-count">1</span></li></ul>
     </div>
   </aside>
 
@@ -489,7 +506,7 @@
           </li>
         
           <li>
-            <a href="/2020/05/26/2019-07-25-rxjs-subject/">RxJS：四种Subject的用法和区别</a>
+            <a href="/2020/05/26/2019-07-05-rxjs-introduce/">RxJS入门和概览</a>
           </li>
         
       </ul>
@@ -501,7 +518,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tags</h3>
     <div class="widget-content">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文档/">技术文档</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">2</span></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/RxJS/">RxJS</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/天净沙/">天净沙</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/开发工具/">开发工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/技术文档/">技术文档</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据可视化/">数据可视化</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据挖掘/">数据挖掘</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/格律词/">格律词</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/爬虫/">爬虫</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/自动处理/">自动处理</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/蝶恋花/">蝶恋花</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/采桑子/">采桑子</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/随笔/">随笔</a><span class="tag-list-count">2</span></li></ul>
     </div>
   </aside>
 
@@ -510,7 +527,7 @@
   <aside class="widget">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget-content tagcloud">
-      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/技术文档/" style="font-size: 10px;">技术文档</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a>
+      <a href="/tags/RxJS/" style="font-size: 20px;">RxJS</a> <a href="/tags/天净沙/" style="font-size: 13.33px;">天净沙</a> <a href="/tags/开发工具/" style="font-size: 10px;">开发工具</a> <a href="/tags/技术文档/" style="font-size: 10px;">技术文档</a> <a href="/tags/数据可视化/" style="font-size: 10px;">数据可视化</a> <a href="/tags/数据挖掘/" style="font-size: 10px;">数据挖掘</a> <a href="/tags/格律词/" style="font-size: 16.67px;">格律词</a> <a href="/tags/爬虫/" style="font-size: 10px;">爬虫</a> <a href="/tags/自动处理/" style="font-size: 10px;">自动处理</a> <a href="/tags/蝶恋花/" style="font-size: 10px;">蝶恋花</a> <a href="/tags/采桑子/" style="font-size: 10px;">采桑子</a> <a href="/tags/随笔/" style="font-size: 13.33px;">随笔</a>
     </div>
   </aside>
 
